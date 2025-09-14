@@ -12,7 +12,7 @@ A Flutter application for interactive diagram creation with drill-down capabilit
 
 ## 🚀 Live Demo
 
-**Try it now:** [drilldraw.damiankanak.com](https://drilldraw.damiankanak.com) *(Coming soon with GitHub Pages)*
+**Try it now:** [https://damian-kanak.github.io/drilldraw/](https://damian-kanak.github.io/drilldraw/)
 
 ## 📸 Screenshots
 
@@ -125,7 +125,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔗 Links
 
-- **Live Demo**: [drilldraw.damiankanak.com](https://drilldraw.damiankanak.com) *(Coming soon)*
+- **Live Demo**: [https://damian-kanak.github.io/drilldraw/](https://damian-kanak.github.io/drilldraw/)
 - **Issues**: [GitHub Issues](https://github.com/damian-kanak/drilldraw/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/damian-kanak/drilldraw/discussions)
 - **Documentation**: [Project Docs](docs/)
