@@ -36,7 +36,6 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
   void _addDot(Offset position) {
     setState(() {
       dots.add(position);
-      print('Added dot at position: $position, total dots: ${dots.length}');
     });
   }
 
@@ -49,7 +48,7 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
   void _handleKeyboardEvent(RawKeyEvent event) {
     if (event is RawKeyDownEvent) {
       // Handle keyboard shortcuts
-      if (event.logicalKey == LogicalKeyboardKey.keyC && 
+      if (event.logicalKey == LogicalKeyboardKey.keyC &&
           event.isControlPressed) {
         _clearDots();
       } else if (event.logicalKey == LogicalKeyboardKey.escape) {
@@ -84,74 +83,76 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
             ),
           ],
         ),
-      body: Column(
-        children: [
-          // Info panel
-          Semantics(
-            container: true,
-            label: 'Application status and instructions',
-            child: Container(
-              key: const ValueKey('info_panel'),
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              color: Theme.of(context).colorScheme.surfaceContainerHighest,
-              child: Column(
-                children: [
-                  Semantics(
-                    label: 'Instructions for using the application',
-                    child: Text(
-                      'Click anywhere on the canvas to place a dot',
-                      style: Theme.of(context).textTheme.titleMedium,
+        body: Column(
+          children: [
+            // Info panel
+            Semantics(
+              container: true,
+              label: 'Application status and instructions',
+              child: Container(
+                key: const ValueKey('info_panel'),
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                child: Column(
+                  children: [
+                    Semantics(
+                      label: 'Instructions for using the application',
+                      child: Text(
+                        'Click anywhere on the canvas to place a dot',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Semantics(
-                    label: 'Current number of dots placed',
-                    liveRegion: true,
-                    child: Text(
-                      'Dots placed: ${dots.length}',
-                      style: Theme.of(context).textTheme.bodyMedium,
+                    const SizedBox(height: 8),
+                    Semantics(
+                      label: 'Current number of dots placed',
+                      liveRegion: true,
+                      child: Text(
+                        'Dots placed: ${dots.length}',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          // Canvas area with RepaintBoundary for performance
-          Expanded(
-            child: RepaintBoundary(
-              child: Container(
-                width: double.infinity,
-                color: Colors.grey[100],
-                child: Focus(
-                  focusNode: _canvasFocusNode,
-                  autofocus: true,
-                  child: Semantics(
-                    label: 'Drawing canvas. Click to place dots. ${dots.length} dots placed.',
-                    hint: 'Interactive drawing area. Use mouse click or touch to place dots.',
-                    child: GestureDetector(
-                      key: const ValueKey('canvas_gesture_detector'),
-                      onTapDown: (TapDownDetails details) {
-                        final RenderBox renderBox = _canvasKey.currentContext!
-                            .findRenderObject() as RenderBox;
-                        final localPosition = renderBox.globalToLocal(
-                          details.globalPosition,
-                        );
-                        _addDot(localPosition);
-                      },
-                      child: CustomPaint(
-                        key: _canvasKey,
-                        painter: DotPainter(dots),
-                        size: Size.infinite,
+            // Canvas area with RepaintBoundary for performance
+            Expanded(
+              child: RepaintBoundary(
+                child: Container(
+                  width: double.infinity,
+                  color: Colors.grey[100],
+                  child: Focus(
+                    focusNode: _canvasFocusNode,
+                    autofocus: true,
+                    child: Semantics(
+                      label:
+                          'Drawing canvas. Click to place dots. ${dots.length} dots placed.',
+                      hint:
+                          'Interactive drawing area. Use mouse click or touch to place dots.',
+                      child: GestureDetector(
+                        key: const ValueKey('canvas_gesture_detector'),
+                        onTapDown: (TapDownDetails details) {
+                          final RenderBox renderBox = _canvasKey.currentContext!
+                              .findRenderObject() as RenderBox;
+                          final localPosition = renderBox.globalToLocal(
+                            details.globalPosition,
+                          );
+                          _addDot(localPosition);
+                        },
+                        child: CustomPaint(
+                          key: _canvasKey,
+                          painter: DotPainter(dots),
+                          size: Size.infinite,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
       ),
     );
   }
@@ -164,8 +165,6 @@ class DotPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    print('DotPainter.paint called with ${dots.length} dots, canvas size: $size');
-    
     // Pre-create paint objects for better performance
     final dotPaint = Paint()
       ..color = Colors.deepPurple.shade700
@@ -177,9 +176,7 @@ class DotPainter extends CustomPainter {
       ..strokeWidth = 3.0;
 
     // Draw all dots with optimized paint operations
-    for (int i = 0; i < dots.length; i++) {
-      final dot = dots[i];
-      print('Drawing dot $i at position: $dot');
+    for (final dot in dots) {
       // Draw border first (larger circle)
       canvas.drawCircle(dot, 10.0, borderPaint);
       // Draw fill on top (smaller circle)
