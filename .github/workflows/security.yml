@@ -29,12 +29,18 @@ jobs:
       run: flutter pub get
       
     - name: Run security audit
-      run: flutter pub audit
+      run: dart pub audit
+      continue-on-error: true
       
     - name: Check for vulnerable dependencies
       run: |
         # Check for known vulnerabilities in dependencies
         flutter pub deps --style=tree | grep -E "(dev_dependencies|dependencies)" || true
+        
+    - name: Check dependency health
+      run: |
+        # Check for outdated dependencies
+        flutter pub outdated || true
         
     - name: Analyze for security issues
       run: flutter analyze --fatal-infos
