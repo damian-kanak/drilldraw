@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
 
 void main() {
   runApp(const DrillDrawApp());
@@ -64,7 +63,7 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(16),
-            color: Theme.of(context).colorScheme.surfaceVariant,
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
             child: Column(
               children: [
                 Text(
