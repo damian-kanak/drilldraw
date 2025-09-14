@@ -101,5 +101,5 @@ jobs:
         git add .
         git commit -m "Deploy: Update GitHub Pages with latest build" || exit 0
         
-        # Push to gh-pages branch
-        git push origin gh-pages --force
+        # Push to gh-pages branch using token
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git gh-pages --force
