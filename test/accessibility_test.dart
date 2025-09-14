@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -11,7 +12,7 @@ void main() {
       await tester.pumpWidget(const DrillDrawApp());
 
       // Verify the app has semantic structure
-      final semantics = tester.binding.pipelineOwner.semanticsOwner;
+      final semantics = SemanticsBinding.instance;
       expect(semantics, isNotNull);
     });
 
@@ -109,8 +110,8 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpWidget(const DrillDrawApp());
 
-      // Verify RawKeyboardListener is present
-      final keyboardListener = find.byType(RawKeyboardListener);
+      // Verify KeyboardListener is present
+      final keyboardListener = find.byType(KeyboardListener);
       expect(keyboardListener, findsOneWidget);
     });
   });

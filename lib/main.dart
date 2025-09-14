@@ -45,11 +45,11 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
     });
   }
 
-  void _handleKeyboardEvent(RawKeyEvent event) {
-    if (event is RawKeyDownEvent) {
+  void _handleKeyboardEvent(KeyEvent event) {
+    if (event is KeyDownEvent) {
       // Handle keyboard shortcuts
       if (event.logicalKey == LogicalKeyboardKey.keyC &&
-          event.isControlPressed) {
+          HardwareKeyboard.instance.isControlPressed) {
         _clearDots();
       } else if (event.logicalKey == LogicalKeyboardKey.escape) {
         _clearDots();
@@ -65,9 +65,9 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return RawKeyboardListener(
+    return KeyboardListener(
       focusNode: FocusNode(),
-      onKey: _handleKeyboardEvent,
+      onKeyEvent: _handleKeyboardEvent,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -116,35 +116,33 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
                 ),
               ),
             ),
-            // Canvas area with RepaintBoundary for performance
+            // Canvas area
             Expanded(
-              child: RepaintBoundary(
-                child: Container(
-                  width: double.infinity,
-                  color: Colors.grey[100],
-                  child: Focus(
-                    focusNode: _canvasFocusNode,
-                    autofocus: true,
-                    child: Semantics(
-                      label:
-                          'Drawing canvas. Click to place dots. ${dots.length} dots placed.',
-                      hint:
-                          'Interactive drawing area. Use mouse click or touch to place dots.',
-                      child: GestureDetector(
-                        key: const ValueKey('canvas_gesture_detector'),
-                        onTapDown: (TapDownDetails details) {
-                          final RenderBox renderBox = _canvasKey.currentContext!
-                              .findRenderObject() as RenderBox;
-                          final localPosition = renderBox.globalToLocal(
-                            details.globalPosition,
-                          );
-                          _addDot(localPosition);
-                        },
-                        child: CustomPaint(
-                          key: _canvasKey,
-                          painter: DotPainter(dots),
-                          size: Size.infinite,
-                        ),
+              child: Container(
+                width: double.infinity,
+                color: Colors.grey[100],
+                child: Focus(
+                  focusNode: _canvasFocusNode,
+                  autofocus: true,
+                  child: Semantics(
+                    label:
+                        'Drawing canvas. Click to place dots. ${dots.length} dots placed.',
+                    hint:
+                        'Interactive drawing area. Use mouse click or touch to place dots.',
+                    child: GestureDetector(
+                      key: const ValueKey('canvas_gesture_detector'),
+                      onTapDown: (TapDownDetails details) {
+                        final RenderBox renderBox = _canvasKey.currentContext!
+                            .findRenderObject() as RenderBox;
+                        final localPosition = renderBox.globalToLocal(
+                          details.globalPosition,
+                        );
+                        _addDot(localPosition);
+                      },
+                      child: CustomPaint(
+                        key: _canvasKey,
+                        painter: DotPainter(dots),
+                        size: Size.infinite,
                       ),
                     ),
                   ),
@@ -167,37 +165,24 @@ class DotPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // Pre-create paint objects for better performance
     final dotPaint = Paint()
-      ..color = Colors.deepPurple.shade700
+      ..color = Colors.deepPurple
       ..style = PaintingStyle.fill;
 
     final borderPaint = Paint()
-      ..color = Colors.white
+      ..color = Colors.deepPurple.shade700
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 3.0;
+      ..strokeWidth = 2.0;
 
-    // Draw all dots with optimized paint operations
+    // Draw all dots
     for (final dot in dots) {
-      // Draw border first (larger circle)
-      canvas.drawCircle(dot, 10.0, borderPaint);
-      // Draw fill on top (smaller circle)
       canvas.drawCircle(dot, 8.0, dotPaint);
+      canvas.drawCircle(dot, 8.0, borderPaint);
     }
   }
 
   @override
   bool shouldRepaint(DotPainter oldDelegate) {
-    // More efficient comparison - check length first, then contents
-    if (dots.length != oldDelegate.dots.length) {
-      return true;
-    }
-
-    // Only do deep comparison if lengths match
-    for (int i = 0; i < dots.length; i++) {
-      if (dots[i] != oldDelegate.dots[i]) {
-        return true;
-      }
-    }
-
-    return false;
+    // Always repaint when dots list changes
+    return dots != oldDelegate.dots;
   }
 }
