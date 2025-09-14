@@ -36,6 +36,7 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
   void _addDot(Offset position) {
     setState(() {
       dots.add(position);
+      print('Added dot at position: $position, total dots: ${dots.length}');
     });
   }
 
@@ -163,20 +164,26 @@ class DotPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    print('DotPainter.paint called with ${dots.length} dots, canvas size: $size');
+    
     // Pre-create paint objects for better performance
     final dotPaint = Paint()
-      ..color = Colors.deepPurple
+      ..color = Colors.deepPurple.shade700
       ..style = PaintingStyle.fill;
 
     final borderPaint = Paint()
       ..color = Colors.white
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0;
+      ..strokeWidth = 3.0;
 
     // Draw all dots with optimized paint operations
-    for (final dot in dots) {
+    for (int i = 0; i < dots.length; i++) {
+      final dot = dots[i];
+      print('Drawing dot $i at position: $dot');
+      // Draw border first (larger circle)
+      canvas.drawCircle(dot, 10.0, borderPaint);
+      // Draw fill on top (smaller circle)
       canvas.drawCircle(dot, 8.0, dotPaint);
-      canvas.drawCircle(dot, 8.0, borderPaint);
     }
   }
 
