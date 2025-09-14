@@ -1,258 +1,223 @@
 # Contributing to DrillDraw
 
-Thank you for your interest in contributing to DrillDraw! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to DrillDraw! This document provides guidelines for contributing to the project.
 
-## Table of Contents
+## 🏷️ Label System
 
-- [Code of Conduct](#code-of-conduct)
-- [Getting Started](#getting-started)
-- [Development Workflow](#development-workflow)
-- [Commit Guidelines](#commit-guidelines)
-- [Pull Request Process](#pull-request-process)
-- [Development Standards](#development-standards)
-- [Testing](#testing)
-- [Architecture Guidelines](#architecture-guidelines)
-- [Issue Guidelines](#issue-guidelines)
+We use a simplified label system with 18 essential labels to organize issues and pull requests.
 
-## Code of Conduct
+### Area Labels (8)
+Categorize issues by the area of the codebase they affect:
 
-This project adheres to a code of conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to [your-email@example.com].
+- **`area-canvas`** - Canvas drawing and interaction features
+- **`area-node`** - Node creation and management functionality  
+- **`area-edge`** - Edge/connection functionality
+- **`area-hierarchy`** - Hierarchical structure features
+- **`area-ui`** - User interface components and layout
+- **`area-devops`** - CI/CD, deployment, and infrastructure
+- **`area-docs`** - Documentation and guides
+- **`area-mermaid`** - Mermaid diagram integration
 
-## Getting Started
+### Kind Labels (4)
+Classify the type of work:
+
+- **`kind-feature`** - New feature or enhancement
+- **`kind-bug`** - Bug fix or issue resolution
+- **`kind-chore`** - Maintenance, refactoring, cleanup
+- **`kind-spike`** - Research, experimentation, proof of concept
+
+### Priority Labels (3)
+Indicate the urgency and importance:
+
+- **`prio-P1`** - Critical priority - must fix immediately
+- **`prio-P2`** - High priority - should fix soon  
+- **`prio-P3`** - Medium priority - nice to have
+
+### Phase Labels (3)
+Show which development phase the issue belongs to:
+
+- **`phase-PoC`** - Proof of Concept phase
+- **`phase-MVP`** - Minimum Viable Product phase
+- **`phase-Beta`** - Beta release phase
+
+## 🚀 Getting Started
 
 ### Prerequisites
-
-- Flutter SDK (version 3.9.2 or higher)
-- Dart SDK
+- Flutter 3.24.0 or later
+- Dart SDK 3.3.0 or later
 - Git
-- A code editor (VS Code, Android Studio, or IntelliJ IDEA)
+- GitHub account
 
-### Setup
-
-1. Fork the repository on GitHub
-2. Clone your fork locally:
-   ```bash
-   git clone https://github.com/your-username/drilldraw.git
-   cd drilldraw
-   ```
-3. Install dependencies:
-   ```bash
-   flutter pub get
-   ```
-4. Run the app to ensure everything works:
-   ```bash
-   flutter run
-   ```
-
-## Development Workflow
-
-### Branching Strategy
-
-We use **trunk-based development** with short-lived feature branches:
-
-- `main` - Production-ready code
-- `feature/description` - New features (e.g., `feature/canvas-zoom`)
-- `fix/description` - Bug fixes (e.g., `fix/edge-rendering`)
-- `chore/description` - Maintenance tasks (e.g., `chore/update-deps`)
-
-### Branch Naming Convention
-
-Use descriptive branch names:
-- `feature/canvas-pan-zoom`
-- `fix/node-drag-snap`
-- `chore/update-flutter-sdk`
-- `docs/update-readme`
-
-## Commit Guidelines
-
-We follow [Conventional Commits](https://www.conventionalcommits.org/):
-
-```
-<type>[optional scope]: <description>
-
-[optional body]
-
-[optional footer(s)]
-```
-
-### Types
-
-- `feat`: A new feature
-- `fix`: A bug fix
-- `docs`: Documentation only changes
-- `style`: Changes that do not affect the meaning of the code
-- `refactor`: A code change that neither fixes a bug nor adds a feature
-- `perf`: A code change that improves performance
-- `test`: Adding missing tests or correcting existing tests
-- `chore`: Changes to the build process or auxiliary tools
-
-### Examples
-
-```bash
-feat(canvas): add pan and zoom functionality
-fix(edge): resolve edge rendering on node move
-docs: update README with new features
-test(node): add unit tests for node creation
-chore(deps): update Flutter to 3.24.0
-```
-
-## Pull Request Process
-
-### Before Submitting
-
-1. **Check existing issues** - Ensure your work addresses an existing issue or create one
-2. **Update tests** - Add tests for new functionality
-3. **Update documentation** - Update relevant docs
-4. **Run checks locally**:
-   ```bash
-   flutter analyze
-   flutter test
-   flutter format .
-   ```
-
-### PR Requirements
-
-- [ ] **Description**: Clear description of changes
-- [ ] **Tests**: All tests pass
-- [ ] **Documentation**: Updated if needed
-- [ ] **Breaking Changes**: Documented if any
-- [ ] **Issue Reference**: Links to related issue(s)
-
-### PR Template
-
-```markdown
-## Description
-Brief description of changes
-
-## Type of Change
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Breaking change
-- [ ] Documentation update
-
-## Testing
-- [ ] Unit tests pass
-- [ ] Widget tests pass
-- [ ] Integration tests pass (if applicable)
-- [ ] Manual testing completed
-
-## Checklist
-- [ ] Code follows project style guidelines
-- [ ] Self-review completed
-- [ ] Documentation updated
-- [ ] No breaking changes (or documented)
-
-## Related Issues
-Fixes #(issue number)
-```
-
-## Development Standards
-
-### Code Style
-
-- Follow [Dart Style Guide](https://dart.dev/guides/language/effective-dart/style)
-- Use `flutter format .` before committing
-- Follow SOLID principles (see [ADR-0001](docs/ADR-0001-architecture.md))
-
-### Architecture
-
-- Follow layered architecture (Model → Services → Presentation)
-- Use dependency injection with Riverpod
-- Implement interfaces for testability
-- Keep components focused and single-responsibility
-
-### Performance
-
-- Target 60fps with 500+ nodes
-- Use `RepaintBoundary` for canvas rendering
-- Implement proper state management
-- Profile performance-critical code
-
-## Testing
-
-### Testing Strategy
-
-We follow the testing pyramid:
-
-1. **Unit Tests** (75% coverage target)
-   - Pure logic (layout math, commands, serializers)
-   - Run: `flutter test test/unit/`
-
-2. **Widget/Golden Tests**
-   - UI components and rendering
-   - Run: `flutter test test/widget/`
-
-3. **Integration Tests**
-   - End-to-end user flows
-   - Run: `flutter test integration_test/`
+### Development Setup
+1. Fork the repository
+2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/drilldraw.git`
+3. Navigate to the project: `cd drilldraw`
+4. Install dependencies: `flutter pub get`
+5. Run the app: `flutter run`
 
 ### Running Tests
-
 ```bash
-# All tests
+# Run all tests
 flutter test
 
-# Specific test file
-flutter test test/widget/canvas_test.dart
-
-# Coverage report
+# Run tests with coverage
 flutter test --coverage
+
+# Run analysis
+flutter analyze
+
+# Check formatting
+dart format --set-exit-if-changed .
 ```
 
-## Architecture Guidelines
+## 📝 Contributing Process
 
-### SOLID Principles
+### 1. Create an Issue
+Before starting work, create an issue to discuss:
+- What you want to implement
+- Why it's needed
+- How you plan to approach it
 
-- **SRP**: Single Responsibility - separate model, layout, rendering, interaction
-- **OCP**: Open/Closed - plugin architecture for layouts and serializers
-- **LSP**: Liskov Substitution - interchangeable service implementations
-- **ISP**: Interface Segregation - narrow, focused interfaces
-- **DIP**: Dependency Inversion - depend on abstractions via Riverpod
+### 2. Fork and Branch
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature-name`
+3. Make your changes
 
-### Key Components
+### 3. Code Standards
+- Follow Dart/Flutter style guidelines
+- Write tests for new functionality
+- Ensure all tests pass
+- Run `flutter analyze` and fix any issues
+- Format code with `dart format .`
 
-- **Model**: Immutable entities (`Node`, `Edge`, `DiagramSpace`)
-- **Services**: `LayoutService`, `CommandService`, `DiagramRepository`
-- **Presentation**: Widgets and painters
-- **Integration**: Mermaid bridge with proper interfaces
+### 4. Commit Messages
+Use clear, descriptive commit messages:
+```
+feat: add canvas zoom functionality
+fix: resolve dot placement accuracy issue
+docs: update README with new features
+test: add unit tests for dot management
+```
 
-## Issue Guidelines
+### 5. Pull Request
+1. Push your branch: `git push origin feature/your-feature-name`
+2. Create a pull request
+3. Ensure CI checks pass
+4. Request review from maintainers
 
-### Bug Reports
+## 🔍 Issue Guidelines
 
-Include:
-- Flutter/Dart version
-- Steps to reproduce
-- Expected vs actual behavior
-- Screenshots if applicable
+### Creating Issues
+- Use clear, descriptive titles
+- Provide detailed descriptions
+- Include steps to reproduce (for bugs)
+- Add relevant labels
+- Link to related issues
 
-### Feature Requests
+### Labeling Issues
+When creating issues, apply appropriate labels:
+- **Area**: Which part of the system is affected
+- **Kind**: What type of work is needed
+- **Priority**: How urgent is it
+- **Phase**: Which development phase it belongs to
 
-Include:
-- Use case description
-- Proposed solution
-- Alternative solutions considered
-- Impact on existing functionality
+### Example Issue
+```
+Title: Canvas zoom functionality not working on mobile devices
 
-### Labels
+Labels: area-canvas, kind-bug, prio-P2, phase-MVP
 
-We use structured labels:
-- `area/*` - Component area (canvas, node, edge, etc.)
-- `kind/*` - Type (feature, bug, chore, etc.)
-- `prio/*` - Priority (P1, P2, P3)
-- `milestone/*` - Development milestone
+Description:
+The canvas zoom feature works on desktop but fails on mobile devices.
 
-## Getting Help
+Steps to reproduce:
+1. Open app on mobile device
+2. Try to pinch-to-zoom on canvas
+3. Observe that zoom doesn't work
 
-- **Issues**: Use GitHub Issues for bugs and feature requests
-- **Discussions**: Use GitHub Discussions for questions
-- **Documentation**: Check existing docs in `/docs` folder
+Expected behavior:
+Canvas should zoom in/out with pinch gestures
 
-## Recognition
+Actual behavior:
+Canvas remains at fixed zoom level
+```
 
-Contributors will be recognized in:
-- CONTRIBUTORS.md file
-- Release notes
-- Project README
+## 🧪 Testing Guidelines
 
-Thank you for contributing to DrillDraw! 🚀
+### Test Coverage
+- Aim for high test coverage
+- Write unit tests for business logic
+- Write widget tests for UI components
+- Write integration tests for user flows
+
+### Test Structure
+```dart
+group('Dot Management', () {
+  test('should add dot when canvas is tapped', () {
+    // Test implementation
+  });
+  
+  test('should remove dot when clear button is pressed', () {
+    // Test implementation
+  });
+});
+```
+
+## 📚 Documentation
+
+### Code Documentation
+- Document public APIs with Dartdoc comments
+- Include examples for complex functions
+- Keep documentation up to date
+
+### README Updates
+- Update README.md when adding new features
+- Include screenshots for UI changes
+- Update installation instructions if needed
+
+## 🔒 Security
+
+### Security Issues
+- Report security issues privately to maintainers
+- Use `prio-P1` priority for security issues
+- Apply `area-devops` or relevant area label
+
+### Code Security
+- Validate all user inputs
+- Use secure coding practices
+- Follow Flutter security guidelines
+
+## 🎯 Development Phases
+
+### PoC (Proof of Concept)
+- Core canvas functionality
+- Basic dot placement
+- Simple UI
+- Essential CI/CD
+
+### MVP (Minimum Viable Product)
+- Complete diagram editor
+- Node and edge management
+- Hierarchical structures
+- Performance optimization
+
+### Beta
+- Advanced features
+- Mermaid integration
+- PWA capabilities
+- Production readiness
+
+## 📞 Getting Help
+
+- Check existing issues first
+- Join our discussions
+- Ask questions in issues
+- Review documentation
+
+## 📄 License
+
+By contributing to DrillDraw, you agree that your contributions will be licensed under the MIT License.
+
+---
+
+Thank you for contributing to DrillDraw! 🎨
