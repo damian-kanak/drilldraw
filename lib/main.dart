@@ -140,14 +140,14 @@ class DotPainter extends CustomPainter {
     if (dots.length != oldDelegate.dots.length) {
       return true;
     }
-    
+
     // Only do deep comparison if lengths match
     for (int i = 0; i < dots.length; i++) {
       if (dots[i] != oldDelegate.dots[i]) {
         return true;
       }
     }
-    
+
     return false;
   }
 }
