@@ -1,0 +1,49 @@
+# Line endings
+# Set default behavior to automatically normalize line endings
+* text=auto
+
+# Dart files
+*.dart text eol=lf
+*.dart.mocks text eol=lf
+
+# Flutter generated files
+*.g.dart text eol=lf -diff -merge
+*.freezed.dart text eol=lf -diff -merge
+*.gr.dart text eol=lf -diff -merge
+
+# Configuration files
+pubspec.yaml text eol=lf
+pubspec.lock text eol=lf
+analysis_options.yaml text eol=lf
+*.toml text eol=lf
+
+# Web assets
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.svg binary
+
+# Fonts
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.eot binary
+
+# Archives
+*.zip binary
+*.tar binary
+*.gz binary
+
+# Documentation (exclude from exports)
+docs/** export-ignore
+test/** export-ignore
+*.md export-ignore
+
+# IDE files (exclude from exports)
+.vscode/** export-ignore
+.idea/** export-ignore
+*.iml export-ignore
