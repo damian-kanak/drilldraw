@@ -119,12 +119,12 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
           // Canvas area with RepaintBoundary for performance
           Expanded(
             child: RepaintBoundary(
-              child: Focus(
-                focusNode: _canvasFocusNode,
-                autofocus: true,
-                child: Container(
-                  width: double.infinity,
-                  color: Colors.grey[100],
+              child: Container(
+                width: double.infinity,
+                color: Colors.grey[100],
+                child: Focus(
+                  focusNode: _canvasFocusNode,
+                  autofocus: true,
                   child: Semantics(
                     label: 'Drawing canvas. Click to place dots. ${dots.length} dots placed.',
                     hint: 'Interactive drawing area. Use mouse click or touch to place dots.',
