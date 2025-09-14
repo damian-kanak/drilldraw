@@ -85,6 +85,12 @@ jobs:
     - name: Build web app for deployment
       run: flutter build web --release --base-href /drilldraw/
       
+    - name: Copy performance optimization files
+      run: |
+        # Copy _headers and _redirects files to build output
+        cp web/_headers build/web/
+        cp web/_redirects build/web/
+      
     - name: Deploy to GitHub Pages
       run: |
         # Configure git

@@ -1,0 +1,11 @@
+# DrillDraw - Redirects Configuration
+# GitHub Pages supports custom redirects via _redirects file
+
+# Redirect root to main app if needed (optional)
+# / /app.html 200
+
+# Fallback for SPA routing (if we add routing later)
+# /app/* /app.html 200
+
+# Force HTTPS (GitHub Pages handles this automatically, but good to have)
+http://damian-kanak.github.io/drilldraw/* https://damian-kanak.github.io/drilldraw/:splat 301!
