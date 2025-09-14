@@ -48,7 +48,13 @@ jobs:
     - name: Check for hardcoded secrets
       run: |
         # Basic secret scanning (can be enhanced with tools like truffleHog)
-        if grep -r -i "password\|secret\|key\|token" lib/ --exclude-dir=.dart_tool; then
+        # Look for common secret patterns but exclude Flutter-specific keywords
+        if grep -r -i -E "(api_key|secret_key|private_key|access_token|bearer_token|password\s*=)" lib/ --exclude-dir=.dart_tool; then
           echo "Potential secrets found in code"
+          exit 1
+        fi
+        # Check for common secret variable patterns
+        if grep -r -i -E "(const.*key.*=.*['\"].*['\"])" lib/ --exclude-dir=.dart_tool | grep -v -E "(super\.key|GlobalKey|UniqueKey)"; then
+          echo "Potential hardcoded keys found"
           exit 1
         fi
