@@ -11,20 +11,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:drilldraw/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('DrillDraw app smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(const DrillDrawApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Verify that the app loads with correct title
+    expect(find.text('DrillDraw'), findsOneWidget);
+    expect(find.text('Click anywhere on the canvas to place a dot'), findsOneWidget);
+    expect(find.text('Dots placed: 0'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify clear button is present
+    expect(find.byIcon(Icons.clear), findsOneWidget);
   });
 }
