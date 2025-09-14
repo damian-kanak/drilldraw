@@ -85,9 +85,8 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
               color: Colors.grey[100],
               child: GestureDetector(
                 onTapDown: (TapDownDetails details) {
-                  final RenderBox renderBox =
-                      _canvasKey.currentContext!.findRenderObject()
-                          as RenderBox;
+                  final RenderBox renderBox = _canvasKey.currentContext!
+                      .findRenderObject() as RenderBox;
                   final localPosition = renderBox.globalToLocal(
                     details.globalPosition,
                   );
