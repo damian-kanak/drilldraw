@@ -85,14 +85,21 @@ jobs:
     - name: Build web app for deployment
       run: flutter build web --release --base-href /drilldraw/
       
-    - name: Setup Pages
-      uses: actions/configure-pages@v4
-      
-    - name: Upload to Pages
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: build/web
-        
     - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+      run: |
+        # Configure git
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        
+        # Switch to gh-pages branch
+        git checkout -B gh-pages
+        
+        # Copy built files to root
+        cp -r build/web/* .
+        
+        # Add and commit changes
+        git add .
+        git commit -m "Deploy: Update GitHub Pages with latest build" || exit 0
+        
+        # Push to gh-pages branch
+        git push origin gh-pages --force
