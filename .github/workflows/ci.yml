@@ -94,12 +94,23 @@ jobs:
         # Switch to gh-pages branch
         git checkout -B gh-pages
         
-        # Copy built files to root
+        # Preserve custom index.html (construction page) if it exists
+        if [ -f index.html ]; then
+          cp index.html index_construction.html
+        fi
+        
+        # Copy built Flutter files to root
         cp -r build/web/* .
+        
+        # Move Flutter app to app.html and restore construction page
+        if [ -f index_construction.html ]; then
+          mv index.html app.html
+          mv index_construction.html index.html
+        fi
         
         # Add and commit changes
         git add .
-        git commit -m "Deploy: Update GitHub Pages with latest build" || exit 0
+        git commit -m "Deploy: Update GitHub Pages with latest build (preserving construction page)" || exit 0
         
         # Push to gh-pages branch using token
         git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git gh-pages --force
