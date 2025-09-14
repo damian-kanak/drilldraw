@@ -40,11 +40,12 @@ jobs:
     - name: Build for macOS
       run: |
         # Try to build for macOS, skip if not supported
-        if flutter build macos --help > /dev/null 2>&1; then
+        if flutter build --help | grep -q "macos"; then
           flutter build macos
         else
           echo "macOS build not supported in this Flutter version, skipping..."
         fi
+      continue-on-error: true
       
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
