@@ -1,11 +1,14 @@
 # DrillDraw
 
-[![CI](https://github.com/damian-kanak/drilldraw/workflows/CI/badge.svg)](https://github.com/damian-kanak/drilldraw/actions)
-[![Coverage](https://codecov.io/gh/damian-kanak/drilldraw/branch/main/graph/badge.svg)](https://codecov.io/gh/damian-kanak/drilldraw)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Flutter](https://img.shields.io/badge/Flutter-3.9.2+-blue.svg)](https://flutter.dev)
+[![Dart](https://img.shields.io/badge/Dart-3.0.0+-blue.svg)](https://dart.dev)
+[![Status: PoC](https://img.shields.io/badge/Status-Proof%20of%20Concept-orange.svg)](https://github.com/damian-kanak/drilldraw)
+[![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20iOS%20%7C%20Android%20%7C%20macOS-lightgrey.svg)](https://flutter.dev)
 
 A Flutter application for interactive diagram creation with drill-down capabilities.
+
+> **Note**: CI/CD badges will be added once GitHub Actions workflows are implemented (see [Issue #79](https://github.com/damian-kanak/drilldraw/issues/79))
 
 ## 🚀 Live Demo
 
