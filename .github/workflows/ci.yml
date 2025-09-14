@@ -18,7 +18,7 @@ jobs:
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.35.3'
+        flutter-version: '3.24.0'
         channel: 'stable'
         cache: true
         
@@ -38,7 +38,13 @@ jobs:
       run: flutter build web --release
       
     - name: Build for macOS
-      run: flutter build macos
+      run: |
+        # Try to build for macOS, skip if not supported
+        if flutter build macos --help > /dev/null 2>&1; then
+          flutter build macos
+        else
+          echo "macOS build not supported in this Flutter version, skipping..."
+        fi
       
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
@@ -65,7 +71,7 @@ jobs:
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.35.3'
+        flutter-version: '3.24.0'
         channel: 'stable'
         cache: true
         

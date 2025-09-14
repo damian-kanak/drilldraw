@@ -167,7 +167,7 @@
       "name": "drilldraw",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "3.9"
+      "languageVersion": "3.3"
     }
   ],
   "generator": "pub",
