@@ -1,0 +1,61 @@
+name: Quality Gates
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  quality:
+    name: Code Quality & Coverage
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.0'
+        channel: 'stable'
+        cache: true
+        
+    - name: Install dependencies
+      run: flutter pub get
+      
+    - name: Run tests with coverage
+      run: flutter test --coverage
+      
+    - name: Generate coverage report
+      run: |
+        # Install lcov for coverage reporting
+        sudo apt-get update
+        sudo apt-get install -y lcov
+        
+        # Convert coverage to lcov format
+        lcov --capture --directory coverage --output-file coverage/lcov.info
+        
+        # Remove coverage for generated files
+        lcov --remove coverage/lcov.info '*/generated_plugin_registrant.dart' --output-file coverage/lcov.info
+        
+        # Generate HTML report
+        genhtml coverage/lcov.info --output-directory coverage/html
+        
+    - name: Upload coverage reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: coverage/
+        retention-days: 30
+        
+    - name: Comment coverage on PR
+      if: github.event_name == 'pull_request'
+      uses: dorny/paths-filter@v2
+      with:
+        filters: |
+          coverage:
+            - 'lib/**'
+            - 'test/**'
+      continue-on-error: true

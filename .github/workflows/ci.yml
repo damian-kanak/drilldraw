@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: Test Flutter App
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.0'
+        channel: 'stable'
+        cache: true
+        
+    - name: Install dependencies
+      run: flutter pub get
+      
+    - name: Verify formatting
+      run: flutter format --output=none --set-exit-if-changed .
+      
+    - name: Analyze project source
+      run: flutter analyze
+      
+    - name: Run tests
+      run: flutter test
+      
+    - name: Build web app
+      run: flutter build web --release
+      
+    - name: Build for macOS
+      run: flutter build macos --release
+      
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: web-build
+        path: build/web/
+        retention-days: 7
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.0'
+        channel: 'stable'
+        cache: true
+        
+    - name: Install dependencies
+      run: flutter pub get
+      
+    - name: Build web app for deployment
+      run: flutter build web --release --base-href /drilldraw/
+      
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Upload to Pages
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: build/web
+        
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
