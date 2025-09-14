@@ -36,10 +36,7 @@ jobs:
         
         # Check if coverage file exists
         if [ -f coverage/lcov.info ]; then
-          # Remove coverage for generated files
-          lcov --remove coverage/lcov.info '*/generated_plugin_registrant.dart' --output-file coverage/lcov.info
-          
-          # Generate HTML report
+          # Generate HTML report (skip lcov filtering to avoid errors)
           genhtml coverage/lcov.info --output-directory coverage/html
           echo "Coverage report generated successfully"
         else
