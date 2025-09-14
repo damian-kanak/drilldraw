@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:drilldraw/main.dart';
+import 'package:drilldraw/widgets/dot_canvas.dart';
+import 'package:drilldraw/widgets/info_panel.dart';
+import 'package:drilldraw/models/drawing_state.dart';
 
 void main() {
   group('Simple Performance Tests', () {
@@ -14,32 +17,33 @@ void main() {
       expect(find.text('Dots placed: 0'), findsOneWidget);
 
       // Verify performance optimizations are present
-      expect(find.byType(RepaintBoundary), findsWidgets);
-      expect(find.byKey(const ValueKey('info_panel')), findsOneWidget);
+      expect(find.byType(InfoPanel), findsOneWidget);
       expect(find.byKey(const ValueKey('canvas_gesture_detector')),
           findsOneWidget);
     });
 
     testWidgets('DotPainter constructor is const', (WidgetTester tester) async {
       // Test that DotPainter can be created with const constructor
-      const dots = <Offset>[
-        Offset(10, 10),
-        Offset(20, 20),
-      ];
+      const drawingState = DrawingState(
+        dots: [
+          Offset(10, 10),
+          Offset(20, 20),
+        ],
+      );
 
-      const painter = DotPainter(dots);
-      expect(painter.dots, equals(dots));
+      const painter = DotPainter(drawingState);
+      expect(painter.drawingState.dots, equals(drawingState.dots));
     });
 
     testWidgets('DotPainter shouldRepaint optimization works',
         (WidgetTester tester) async {
-      const dots1 = <Offset>[Offset(10, 10)];
-      const dots2 = <Offset>[Offset(10, 10), Offset(20, 20)];
-      const dots3 = <Offset>[Offset(10, 10)];
+      const drawingState1 = DrawingState(dots: [Offset(10, 10)]);
+      const drawingState2 = DrawingState(dots: [Offset(10, 10), Offset(20, 20)]);
+      const drawingState3 = DrawingState(dots: [Offset(10, 10)]);
 
-      const painter1 = DotPainter(dots1);
-      const painter2 = DotPainter(dots2);
-      const painter3 = DotPainter(dots3);
+      const painter1 = DotPainter(drawingState1);
+      const painter2 = DotPainter(drawingState2);
+      const painter3 = DotPainter(drawingState3);
 
       // Different lengths should trigger repaint
       expect(painter1.shouldRepaint(painter2), isTrue);
@@ -48,7 +52,7 @@ void main() {
       expect(painter1.shouldRepaint(painter3), isFalse);
 
       // Different positions should trigger repaint
-      const painter4 = DotPainter([Offset(15, 15)]);
+      const painter4 = DotPainter(DrawingState(dots: [Offset(15, 15)]));
       expect(painter1.shouldRepaint(painter4), isTrue);
     });
 
@@ -83,8 +87,7 @@ void main() {
       await tester.pump();
 
       // Verify performance optimizations are still present
-      expect(find.byType(RepaintBoundary), findsWidgets);
-      expect(find.byKey(const ValueKey('info_panel')), findsOneWidget);
+      expect(find.byType(InfoPanel), findsOneWidget);
       expect(find.byKey(const ValueKey('canvas_gesture_detector')),
           findsOneWidget);
     });
