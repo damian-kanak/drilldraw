@@ -42,8 +42,8 @@ jobs:
         # Check for outdated dependencies
         flutter pub outdated || true
         
-      - name: Analyze for security issues
-        run: flutter analyze --no-fatal-infos
+    - name: Analyze for security issues
+      run: flutter analyze --no-fatal-infos
       
     - name: Check for hardcoded secrets
       run: |
