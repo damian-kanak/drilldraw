@@ -61,6 +61,7 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
         children: [
           // Info panel
           Container(
+            key: const ValueKey('info_panel'),
             width: double.infinity,
             padding: const EdgeInsets.all(16),
             color: Theme.of(context).colorScheme.surfaceContainerHighest,
@@ -78,24 +79,27 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
               ],
             ),
           ),
-          // Canvas area
+          // Canvas area with RepaintBoundary for performance
           Expanded(
-            child: Container(
-              width: double.infinity,
-              color: Colors.grey[100],
-              child: GestureDetector(
-                onTapDown: (TapDownDetails details) {
-                  final RenderBox renderBox = _canvasKey.currentContext!
-                      .findRenderObject() as RenderBox;
-                  final localPosition = renderBox.globalToLocal(
-                    details.globalPosition,
-                  );
-                  _addDot(localPosition);
-                },
-                child: CustomPaint(
-                  key: _canvasKey,
-                  painter: DotPainter(dots),
-                  size: Size.infinite,
+            child: RepaintBoundary(
+              child: Container(
+                width: double.infinity,
+                color: Colors.grey[100],
+                child: GestureDetector(
+                  key: const ValueKey('canvas_gesture_detector'),
+                  onTapDown: (TapDownDetails details) {
+                    final RenderBox renderBox = _canvasKey.currentContext!
+                        .findRenderObject() as RenderBox;
+                    final localPosition = renderBox.globalToLocal(
+                      details.globalPosition,
+                    );
+                    _addDot(localPosition);
+                  },
+                  child: CustomPaint(
+                    key: _canvasKey,
+                    painter: DotPainter(dots),
+                    size: Size.infinite,
+                  ),
                 ),
               ),
             ),
@@ -109,28 +113,41 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
 class DotPainter extends CustomPainter {
   final List<Offset> dots;
 
-  DotPainter(this.dots);
+  const DotPainter(this.dots);
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
+    // Pre-create paint objects for better performance
+    final dotPaint = Paint()
       ..color = Colors.deepPurple
       ..style = PaintingStyle.fill;
 
-    for (final dot in dots) {
-      canvas.drawCircle(dot, 8.0, paint);
+    final borderPaint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0;
 
-      // Add a white border for better visibility
-      final borderPaint = Paint()
-        ..color = Colors.white
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 2.0;
+    // Draw all dots with optimized paint operations
+    for (final dot in dots) {
+      canvas.drawCircle(dot, 8.0, dotPaint);
       canvas.drawCircle(dot, 8.0, borderPaint);
     }
   }
 
   @override
   bool shouldRepaint(DotPainter oldDelegate) {
-    return dots != oldDelegate.dots;
+    // More efficient comparison - check length first, then contents
+    if (dots.length != oldDelegate.dots.length) {
+      return true;
+    }
+    
+    // Only do deep comparison if lengths match
+    for (int i = 0; i < dots.length; i++) {
+      if (dots[i] != oldDelegate.dots[i]) {
+        return true;
+      }
+    }
+    
+    return false;
   }
 }
