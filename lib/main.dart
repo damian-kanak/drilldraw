@@ -85,9 +85,12 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
               color: Colors.grey[100],
               child: GestureDetector(
                 onTapDown: (TapDownDetails details) {
-                  final RenderBox renderBox = 
-                      _canvasKey.currentContext!.findRenderObject() as RenderBox;
-                  final localPosition = renderBox.globalToLocal(details.globalPosition);
+                  final RenderBox renderBox =
+                      _canvasKey.currentContext!.findRenderObject()
+                          as RenderBox;
+                  final localPosition = renderBox.globalToLocal(
+                    details.globalPosition,
+                  );
                   _addDot(localPosition);
                 },
                 child: CustomPaint(
@@ -117,7 +120,7 @@ class DotPainter extends CustomPainter {
 
     for (final dot in dots) {
       canvas.drawCircle(dot, 8.0, paint);
-      
+
       // Add a white border for better visibility
       final borderPaint = Paint()
         ..color = Colors.white
