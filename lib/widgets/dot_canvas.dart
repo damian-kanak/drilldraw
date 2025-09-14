@@ -54,13 +54,14 @@ class DotCanvas extends StatelessWidget {
       child: Focus(
         autofocus: true,
         child: Semantics(
-          label: '${AppConstants.canvasSemanticLabel} ${drawingState.dotCount} dots placed.',
+          label:
+              '${AppConstants.canvasSemanticLabel} ${drawingState.dotCount} dots placed.',
           hint: AppConstants.canvasSemanticHint,
           child: GestureDetector(
             key: const ValueKey('canvas_gesture_detector'),
             onTapDown: (TapDownDetails details) {
-              final RenderBox renderBox = canvasKey.currentContext!
-                  .findRenderObject() as RenderBox;
+              final RenderBox renderBox =
+                  canvasKey.currentContext!.findRenderObject() as RenderBox;
               final localPosition = renderBox.globalToLocal(
                 details.globalPosition,
               );

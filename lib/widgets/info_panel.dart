@@ -15,7 +15,8 @@ class InfoPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       container: true,
-      label: '${AppConstants.instructionsText}. ${AppConstants.dotsPlacedText}${drawingState.dotCount}',
+      label:
+          '${AppConstants.instructionsText}. ${AppConstants.dotsPlacedText}${drawingState.dotCount}',
       liveRegion: true,
       child: Container(
         padding: const EdgeInsets.all(16.0),
@@ -35,17 +36,17 @@ class InfoPanel extends StatelessWidget {
             Text(
               '${AppConstants.dotsPlacedText}${drawingState.dotCount}',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
             ),
             if (drawingState.isNotEmpty) ...[
               const SizedBox(height: 8.0),
               Text(
                 AppConstants.keyboardShortcutsHelp,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  fontStyle: FontStyle.italic,
-                ),
+                      fontStyle: FontStyle.italic,
+                    ),
               ),
             ],
           ],

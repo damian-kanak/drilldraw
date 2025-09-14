@@ -38,7 +38,8 @@ void main() {
     testWidgets('DotPainter shouldRepaint optimization works',
         (WidgetTester tester) async {
       const drawingState1 = DrawingState(dots: [Offset(10, 10)]);
-      const drawingState2 = DrawingState(dots: [Offset(10, 10), Offset(20, 20)]);
+      const drawingState2 =
+          DrawingState(dots: [Offset(10, 10), Offset(20, 20)]);
       const drawingState3 = DrawingState(dots: [Offset(10, 10)]);
 
       const painter1 = DotPainter(drawingState1);

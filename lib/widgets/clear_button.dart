@@ -23,10 +23,10 @@ class ClearButton extends StatelessWidget {
         icon: const Icon(Icons.clear),
         tooltip: AppConstants.clearButtonTooltip,
         style: IconButton.styleFrom(
-          backgroundColor: isEnabled 
+          backgroundColor: isEnabled
               ? Theme.of(context).colorScheme.errorContainer
               : Theme.of(context).colorScheme.surfaceContainerHighest,
-          foregroundColor: isEnabled 
+          foregroundColor: isEnabled
               ? Theme.of(context).colorScheme.onErrorContainer
               : Theme.of(context).colorScheme.onSurface,
         ),
