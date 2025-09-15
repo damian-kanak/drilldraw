@@ -66,6 +66,20 @@ A Flutter application for interactive diagram creation with drill-down capabilit
    flutter run
    ```
 
+### Development Setup
+
+4. **Setup Git Hooks (Recommended):**
+   ```bash
+   ./scripts/setup-git-hooks.sh
+   ```
+   
+   This installs a pre-commit hook that automatically:
+   - 📝 Formats your Dart code
+   - 🔍 Runs Flutter analysis  
+   - 🧪 Runs tests
+   
+   If any check fails, the commit will be blocked until issues are resolved.
+
 ## 🎮 Usage
 
 ### Basic Operations

@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Pre-commit hook to format Dart code automatically
+echo "🔧 Running pre-commit checks..."
+
+# Check if dart is available
+if ! command -v dart &> /dev/null; then
+    echo "❌ Dart not found. Please ensure Flutter/Dart is installed."
+    exit 1
+fi
+
+# Format Dart code
+echo "📝 Formatting Dart code..."
+dart format . --set-exit-if-changed
+
+# Check if formatting changed any files
+if [ $? -eq 1 ]; then
+    echo "❌ Code formatting issues found. Files have been formatted automatically."
+    echo "Please review the changes and commit again."
+    echo ""
+    echo "Files that were formatted:"
+    git diff --name-only
+    echo ""
+    echo "To see the changes: git diff"
+    exit 1
+fi
+
+# Run flutter analyze
+echo "🔍 Running Flutter analysis..."
+flutter analyze --no-fatal-infos
+
+if [ $? -ne 0 ]; then
+    echo "❌ Flutter analysis failed. Please fix the issues before committing."
+    exit 1
+fi
+
+# Run tests
+echo "🧪 Running tests..."
+flutter test
+
+if [ $? -ne 0 ]; then
+    echo "❌ Tests failed. Please fix the failing tests before committing."
+    exit 1
+fi
+
+echo "✅ All pre-commit checks passed!"
+exit 0
