@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: DrillDraw Discussion
+    url: https://github.com/damian-kanak/drilldraw/discussions
+    about: Ask questions and discuss ideas about DrillDraw
+  - name: DrillDraw Documentation
+    url: https://github.com/damian-kanak/drilldraw#readme
+    about: Check our README and documentation for common questions
