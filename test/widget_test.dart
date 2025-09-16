@@ -17,10 +17,9 @@ void main() {
 
     // Verify that the app loads with correct title
     expect(find.text('DrillDraw'), findsOneWidget);
-    expect(
-      find.text('Click anywhere on the canvas to place shapes'),
-      findsOneWidget,
-    );
+
+    // Verify drawing mode is displayed
+    expect(find.text('Mode: Dot'), findsOneWidget);
     expect(find.text('Shapes placed: 0'), findsOneWidget);
 
     // Verify clear button is present

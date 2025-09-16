@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'constants/app_constants.dart';
 import 'models/drawing_state.dart';
+import 'models/drawing_mode.dart';
 import 'services/keyboard_service.dart';
 import 'widgets/clear_button.dart';
 import 'widgets/dot_canvas.dart';
 import 'widgets/info_panel.dart';
+import 'widgets/drawing_mode_toolbar.dart';
 
 void main() {
   runApp(const DrillDrawApp());
@@ -45,12 +47,18 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
 
   void _clearDots() {
     setState(() {
-      _drawingState = _drawingState.clearDots();
+      _drawingState = _drawingState.clearAll();
+    });
+  }
+
+  void _changeDrawingMode(DrawingMode mode) {
+    setState(() {
+      _drawingState = _drawingState.setDrawingMode(mode);
     });
   }
 
   void _handleKeyboardEvent(KeyEvent event) {
-    KeyboardService.handleKeyboardEvent(event, _clearDots);
+    KeyboardService.handleKeyboardEvent(event, _clearDots, _changeDrawingMode);
   }
 
   @override
@@ -71,6 +79,11 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
         ),
         body: Column(
           children: [
+            // Drawing mode toolbar
+            DrawingModeToolbar(
+              currentMode: _drawingState.drawingMode,
+              onModeChanged: _changeDrawingMode,
+            ),
             // Info panel
             Padding(
               padding: const EdgeInsets.all(16.0),
