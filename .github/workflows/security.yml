@@ -29,7 +29,7 @@ jobs:
       run: flutter pub get
       
     - name: Run security audit
-      run: dart pub audit
+      run: flutter pub audit
       continue-on-error: true
       
     - name: Check for vulnerable dependencies
