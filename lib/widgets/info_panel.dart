@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../constants/app_constants.dart';
 import '../models/drawing_state.dart';
+import '../services/keyboard_service.dart';
 
 /// Information panel that displays instructions and dot count
 class InfoPanel extends StatelessWidget {
@@ -28,9 +29,27 @@ class InfoPanel extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              AppConstants.instructionsText,
-              style: Theme.of(context).textTheme.bodyMedium,
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'Mode: ${drawingState.drawingMode.displayName}',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                  ),
+                ),
+                Text(
+                  '(${drawingState.drawingMode.keyboardShortcut})',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withValues(alpha: 0.6),
+                      ),
+                ),
+              ],
             ),
             const SizedBox(height: 8.0),
             Text(
@@ -43,7 +62,7 @@ class InfoPanel extends StatelessWidget {
             if (drawingState.isNotEmpty) ...[
               const SizedBox(height: 8.0),
               Text(
-                AppConstants.keyboardShortcutsHelp,
+                KeyboardService.getKeyboardHelpText(),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       fontStyle: FontStyle.italic,
                     ),
