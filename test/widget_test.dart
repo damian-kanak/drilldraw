@@ -18,10 +18,10 @@ void main() {
     // Verify that the app loads with correct title
     expect(find.text('DrillDraw'), findsOneWidget);
     expect(
-      find.text('Click anywhere on the canvas to place a dot'),
+      find.text('Click anywhere on the canvas to place shapes'),
       findsOneWidget,
     );
-    expect(find.text('Dots placed: 0'), findsOneWidget);
+    expect(find.text('Shapes placed: 0'), findsOneWidget);
 
     // Verify clear button is present
     expect(find.byIcon(Icons.clear), findsOneWidget);
