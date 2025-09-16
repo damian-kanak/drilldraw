@@ -28,10 +28,6 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
       
-    - name: Run security audit
-      run: flutter pub audit
-      continue-on-error: true
-      
     - name: Check for vulnerable dependencies
       run: |
         # Check for known vulnerabilities in dependencies
