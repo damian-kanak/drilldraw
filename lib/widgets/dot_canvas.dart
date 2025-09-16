@@ -1,37 +1,7 @@
 import 'package:flutter/material.dart';
 import '../constants/app_constants.dart';
 import '../models/drawing_state.dart';
-
-/// A custom painter that draws dots on the canvas
-class DotPainter extends CustomPainter {
-  final DrawingState drawingState;
-
-  const DotPainter(this.drawingState);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final dotPaint = Paint()
-      ..color = AppConstants.dotFillColor
-      ..style = PaintingStyle.fill;
-
-    final borderPaint = Paint()
-      ..color = Colors.deepPurple.shade700
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = AppConstants.dotStrokeWidth;
-
-    // Draw all dots
-    for (final dot in drawingState.dots) {
-      canvas.drawCircle(dot, AppConstants.dotRadius, dotPaint);
-      canvas.drawCircle(dot, AppConstants.dotRadius, borderPaint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(DotPainter oldDelegate) {
-    // Always repaint when dots list changes
-    return drawingState.dots != oldDelegate.drawingState.dots;
-  }
-}
+import '../painters/combined_painter.dart';
 
 /// A canvas widget that displays and handles dot drawing interactions
 class DotCanvas extends StatelessWidget {
@@ -55,7 +25,7 @@ class DotCanvas extends StatelessWidget {
         autofocus: true,
         child: Semantics(
           label:
-              '${AppConstants.canvasSemanticLabel} ${drawingState.dotCount} dots placed.',
+              '${AppConstants.canvasSemanticLabel} ${drawingState.totalShapeCount} shapes placed.',
           hint: AppConstants.canvasSemanticHint,
           child: GestureDetector(
             key: const ValueKey('canvas_gesture_detector'),
@@ -69,7 +39,7 @@ class DotCanvas extends StatelessWidget {
             },
             child: CustomPaint(
               key: canvasKey,
-              painter: DotPainter(drawingState),
+              painter: CombinedPainter(drawingState),
               size: Size.infinite,
             ),
           ),

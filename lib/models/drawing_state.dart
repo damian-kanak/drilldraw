@@ -10,6 +10,7 @@ class DrawingState {
   final String? selectedRectangleId;
   final DrawingMode drawingMode;
   final bool isDrawing;
+  final Rect? dragPreview;
 
   const DrawingState({
     this.dots = const [],
@@ -18,6 +19,7 @@ class DrawingState {
     this.selectedRectangleId,
     this.drawingMode = DrawingMode.dot,
     this.isDrawing = false,
+    this.dragPreview,
   });
 
   /// Create a copy of this state with updated values
@@ -28,8 +30,10 @@ class DrawingState {
     String? selectedRectangleId,
     DrawingMode? drawingMode,
     bool? isDrawing,
+    Rect? dragPreview,
     bool clearSelectedDot = false,
     bool clearSelectedRectangleId = false,
+    bool clearDragPreview = false,
   }) {
     return DrawingState(
       dots: dots ?? this.dots,
@@ -40,6 +44,7 @@ class DrawingState {
           : (selectedRectangleId ?? this.selectedRectangleId),
       drawingMode: drawingMode ?? this.drawingMode,
       isDrawing: isDrawing ?? this.isDrawing,
+      dragPreview: clearDragPreview ? null : (dragPreview ?? this.dragPreview),
     );
   }
 
@@ -126,6 +131,16 @@ class DrawingState {
       clearSelectedDot: true,
       clearSelectedRectangleId: true,
     );
+  }
+
+  /// Set the drag preview rectangle
+  DrawingState setDragPreview(Rect? preview) {
+    return copyWith(dragPreview: preview);
+  }
+
+  /// Clear the drag preview
+  DrawingState clearDragPreview() {
+    return copyWith(clearDragPreview: true);
   }
 
   /// Get the number of dots currently on the canvas
