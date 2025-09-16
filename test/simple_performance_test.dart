@@ -14,7 +14,7 @@ void main() {
 
       // Verify app loads correctly
       expect(find.text('DrillDraw'), findsOneWidget);
-      expect(find.text('Dots placed: 0'), findsOneWidget);
+      expect(find.text('Shapes placed: 0'), findsOneWidget);
 
       // Verify performance optimizations are present
       expect(find.byType(InfoPanel), findsOneWidget);

@@ -29,7 +29,7 @@ void main() {
       await tester.pumpWidget(const DrillDrawApp());
 
       // Verify initial dot count
-      expect(find.text('Dots placed: 0'), findsOneWidget);
+      expect(find.text('Shapes placed: 0'), findsOneWidget);
 
       // Find the live region semantics
       final liveRegionFinder = find.byWidgetPredicate((widget) {
@@ -54,7 +54,7 @@ void main() {
 
       final button = tester.widget<IconButton>(iconButton);
       expect(button.tooltip, isNotNull);
-      expect(button.tooltip, contains('Clear all dots'));
+      expect(button.tooltip, contains('Clear all shapes'));
     });
 
     testWidgets('Keyboard shortcuts work for clearing dots',
@@ -64,7 +64,7 @@ void main() {
       // Add some dots first
       await tester.tap(find.byKey(const ValueKey('canvas_gesture_detector')));
       await tester.pump();
-      expect(find.text('Dots placed: 1'), findsOneWidget);
+      expect(find.text('Shapes placed: 1'), findsOneWidget);
 
       // Test Ctrl+C shortcut
       await tester.sendKeyDownEvent(LogicalKeyboardKey.controlLeft);
@@ -73,7 +73,7 @@ void main() {
       await tester.sendKeyUpEvent(LogicalKeyboardKey.controlLeft);
       await tester.pump();
 
-      expect(find.text('Dots placed: 0'), findsOneWidget);
+      expect(find.text('Shapes placed: 0'), findsOneWidget);
     });
 
     testWidgets('Escape key clears dots', (WidgetTester tester) async {
@@ -82,14 +82,14 @@ void main() {
       // Add some dots first
       await tester.tap(find.byKey(const ValueKey('canvas_gesture_detector')));
       await tester.pump();
-      expect(find.text('Dots placed: 1'), findsOneWidget);
+      expect(find.text('Shapes placed: 1'), findsOneWidget);
 
       // Test Escape key
       await tester.sendKeyDownEvent(LogicalKeyboardKey.escape);
       await tester.sendKeyUpEvent(LogicalKeyboardKey.escape);
       await tester.pump();
 
-      expect(find.text('Dots placed: 0'), findsOneWidget);
+      expect(find.text('Shapes placed: 0'), findsOneWidget);
     });
 
     testWidgets('Focus management works correctly',
