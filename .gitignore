@@ -5,11 +5,9 @@
 *.swp
 .DS_Store
 .atom/
-.build/
 .buildlog/
 .history
 .svn/
-.swiftpm/
 migrate_working_dir/
 
 # IntelliJ related
@@ -72,9 +70,97 @@ coverage/
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
-# Build artifacts
+
+# Build artifacts - Flutter specific
 .dart_tool/
 build/
 .metadata
-*.iml
+
+# Additional Flutter build artifacts
+*.dill
+*.snapshot
+*.app
+*.ipa
+*.apk
+*.aab
+
+# Flutter/Dart specific
+.packages
+.pub-cache/
+.pub/
+pubspec.lock
+
+# Platform specific build artifacts
+**/android/app/build/
+**/ios/build/
+**/macos/build/
+**/windows/build/
+**/linux/build/
+**/web/build/
+
+# Flutter generated files
+**/ios/Flutter/flutter_export_environment.sh
+**/macos/Flutter/flutter_export_environment.sh
+**/windows/flutter/flutter_export_environment.sh
+**/linux/flutter/flutter_export_environment.sh
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# IDE and editor files
+.vscode/
 .idea/
+*.iml
+*.ipr
+*.iws
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Dependency directories
+node_modules/
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Test coverage
+test_coverage/
