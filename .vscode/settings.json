@@ -1,0 +1,7 @@
+{
+  "dart.flutterSelectDeviceWhenLaunching": false,
+  "dart.flutterDeviceSelection": "bottomBar",
+  "dart.flutterDeviceSelectionMode": "auto",
+  "dart.flutterHotReloadOnSave": "manual"
+}
+
