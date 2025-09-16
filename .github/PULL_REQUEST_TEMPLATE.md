@@ -169,8 +169,10 @@ dart format --set-exit-if-changed .
 ## 🚨 **IMPORTANT: PR Policy Requirements**
 
 ### ✅ **Approval Requirements**
-- [ ] **Minimum 2 approvals required** (or owner approval)
+- [ ] **2 approvals required OR 1 approval from owner**
+- [ ] **Owner can approve their own PR**
 - [ ] **No direct pushes to main** when addressing issues
+- [ ] **Force pushes allowed on feature branches** (not main)
 - [ ] All CI checks must pass before merge
 
 ### ✅ **Content Requirements**
@@ -202,5 +204,6 @@ dart format --set-exit-if-changed .
 - [ ] **This PR addresses a specific issue and includes "I-" prefix with issue number in the title**
 - [ ] **PR description contains a link to the issue it addresses (e.g., "Fixes #123")**
 - [ ] **My branch name follows the convention: "I-{number}-{short-description}"**
-- [ ] **I understand this PR requires approval from 2 reviewers or the owner**
+- [ ] **I understand this PR requires 2 approvals OR 1 approval from owner**
 - [ ] **I understand no direct pushes to main are allowed when addressing issues**
+- [ ] **I understand force pushes are allowed on feature branches but not main**
