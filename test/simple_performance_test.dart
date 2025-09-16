@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:drilldraw/main.dart';
-import 'package:drilldraw/widgets/dot_canvas.dart';
 import 'package:drilldraw/widgets/info_panel.dart';
 import 'package:drilldraw/models/drawing_state.dart';
+import 'package:drilldraw/painters/dot_painter.dart';
 
 void main() {
   group('Simple Performance Tests', () {
