@@ -4,15 +4,19 @@
 <!-- Provide a clear and concise description of what this PR does -->
 
 ## 🔗 Related Issue
-<!-- Link to the issue this PR addresses -->
+<!-- REQUIRED: Link to the issue this PR addresses -->
+<!-- Use GitHub's automatic linking: #(issue_number) -->
+
+**⚠️ REQUIRED: PR description must contain a link to the issue it addresses**
+
 - Fixes #(issue_number)
 - Related to #(issue_number)
 
 ## 🏷️ PR Title Format
-<!-- PR title MUST start with the addressed issue number -->
-<!-- Example: "#123 feat: add rectangle drawing tool" -->
+<!-- PR title MUST start with "I-" and the addressed issue number -->
+<!-- Example: "I-123 feat: add rectangle drawing tool" -->
 
-**⚠️ REQUIRED: All PR titles must begin with the issue number they address**
+**⚠️ REQUIRED: All PR titles must begin with "I-" followed by the issue number they address**
 
 ## 🌿 Branch Naming Policy
 <!-- Branch names MUST follow this format -->
@@ -170,7 +174,8 @@ dart format --set-exit-if-changed .
 - [ ] All CI checks must pass before merge
 
 ### ✅ **Content Requirements**
-- [ ] **Issue number in title** (e.g., "#123 feat: add feature")
+- [ ] **"I-" prefix and issue number in title** (e.g., "I-123 feat: add feature")
+- [ ] **Issue link in description** (e.g., "Fixes #123" or "Related to #123")
 - [ ] **Implementation details provided** (how changes were made)
 - [ ] **Tests included** when applicable
 - [ ] **Relevant information** about the changes
@@ -194,7 +199,8 @@ dart format --set-exit-if-changed .
 - [ ] My changes generate no new warnings
 - [ ] I have added tests that prove my fix is effective or that my feature works
 - [ ] New and existing unit tests pass locally with my changes
-- [ ] **This PR addresses a specific issue and includes the issue number in the title**
+- [ ] **This PR addresses a specific issue and includes "I-" prefix with issue number in the title**
+- [ ] **PR description contains a link to the issue it addresses (e.g., "Fixes #123")**
 - [ ] **My branch name follows the convention: "I-{number}-{short-description}"**
 - [ ] **I understand this PR requires approval from 2 reviewers or the owner**
 - [ ] **I understand no direct pushes to main are allowed when addressing issues**
