@@ -19,16 +19,50 @@ class DotPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = AppConstants.dotStrokeWidth;
 
+    // Paint for selected dots
+    final selectedBorderPaint = Paint()
+      ..color = Colors.orange
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = AppConstants.dotStrokeWidth * 1.5; // Thicker border for selection
+
     // Draw all dots
     for (final dot in drawingState.dots) {
       canvas.drawCircle(dot, AppConstants.dotRadius, dotPaint);
-      canvas.drawCircle(dot, AppConstants.dotRadius, borderPaint);
+      
+      // Draw selection highlight if selected
+      if (drawingState.selectedDot == dot) {
+        canvas.drawCircle(dot, AppConstants.dotRadius, selectedBorderPaint);
+      } else {
+        canvas.drawCircle(dot, AppConstants.dotRadius, borderPaint);
+      }
     }
   }
 
   @override
   bool shouldRepaint(DotPainter oldDelegate) {
-    // Always repaint when dots list changes
-    return drawingState.dots != oldDelegate.drawingState.dots;
+    // Repaint when dots list or selection changes
+    return drawingState.dots != oldDelegate.drawingState.dots ||
+        drawingState.selectedDot != oldDelegate.drawingState.selectedDot;
+  }
+
+  /// Returns the top-most dot at a given point, or null if none found.
+  Offset? getDotAt(Offset point) {
+    // Iterate in reverse to get the top-most dot (last one added)
+    for (int i = drawingState.dots.length - 1; i >= 0; i--) {
+      final dot = drawingState.dots[i];
+      final distance = (point - dot).distance;
+      if (distance <= AppConstants.dotRadius) {
+        return dot;
+      }
+    }
+    return null;
+  }
+
+  /// Returns a list of dots that are within a given area.
+  List<Offset> getDotsInArea(Rect area) {
+    return drawingState.dots.where((dot) {
+      final distance = (area.center - dot).distance;
+      return distance <= AppConstants.dotRadius + area.width / 2;
+    }).toList();
   }
 }

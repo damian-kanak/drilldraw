@@ -118,16 +118,24 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
 
   void _selectShape(Offset position) {
     setState(() {
-      // Try to select a rectangle first
       final combinedPainter = CombinedPainter(_drawingState);
+      
+      // Try to select a rectangle first (rectangles are on top)
       final rectangleAt = combinedPainter.getRectangleAt(position);
-
       if (rectangleAt != null) {
         _drawingState = _drawingState.selectRectangle(rectangleAt.id);
-      } else {
-        // Clear selection if clicking on empty space
-        _drawingState = _drawingState.clearRectangleSelection();
+        return;
       }
+
+      // If no rectangle, try to select a dot
+      final dotAt = combinedPainter.getDotAt(position);
+      if (dotAt != null) {
+        _drawingState = _drawingState.selectDot(dotAt);
+        return;
+      }
+
+      // Clear all selections if clicking on empty space
+      _drawingState = _drawingState.clearAllSelections();
     });
   }
 

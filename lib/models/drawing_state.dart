@@ -74,6 +74,25 @@ class DrawingState {
     return copyWith(rectangles: newRectangles);
   }
 
+  /// Select a dot by position
+  DrawingState selectDot(Offset position) {
+    // First, deselect all rectangles
+    final deselectedRectangles = rectangles.map((rect) {
+      return rect.isSelected ? rect.copyWith(isSelected: false) : rect;
+    }).toList();
+
+    return copyWith(
+      selectedDot: position,
+      rectangles: deselectedRectangles,
+      clearSelectedRectangleId: true, // Clear rectangle selection
+    );
+  }
+
+  /// Clear dot selection
+  DrawingState clearDotSelection() {
+    return copyWith(clearSelectedDot: true);
+  }
+
   /// Select a rectangle by ID
   DrawingState selectRectangle(String id) {
     // First, deselect all rectangles
@@ -89,6 +108,7 @@ class DrawingState {
     return copyWith(
       rectangles: updatedRectangles,
       selectedRectangleId: id,
+      clearSelectedDot: true, // Clear dot selection
     );
   }
 
@@ -101,6 +121,20 @@ class DrawingState {
     return copyWith(
       rectangles: deselectedRectangles,
       clearSelectedRectangleId: true,
+      clearSelectedDot: true, // Also clear dot selection
+    );
+  }
+
+  /// Clear all selections (dots, rectangles, arrows)
+  DrawingState clearAllSelections() {
+    final deselectedRectangles = rectangles.map((rect) {
+      return rect.isSelected ? rect.copyWith(isSelected: false) : rect;
+    }).toList();
+
+    return copyWith(
+      rectangles: deselectedRectangles,
+      clearSelectedRectangleId: true,
+      clearSelectedDot: true,
     );
   }
 
@@ -174,4 +208,10 @@ class DrawingState {
   /// Get all selected rectangles
   List<Rectangle> get selectedRectangles =>
       rectangles.where((rect) => rect.isSelected).toList();
+
+  /// Check if any dots are selected
+  bool get hasSelectedDots => selectedDot != null;
+
+  /// Check if any shapes are selected
+  bool get hasSelectedShapes => hasSelectedDots || hasSelectedRectangles;
 }

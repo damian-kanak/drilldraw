@@ -193,5 +193,127 @@ void main() {
       expect(stateWithMultipleSelected.selectedRectangles,
           [rect1.copyWith(isSelected: true), rect2.copyWith(isSelected: true)]);
     });
+
+    test('DrawingState selectDot works correctly', () {
+      final dot1 = const Offset(10, 10);
+      final dot2 = const Offset(20, 20);
+      final state = DrawingState(dots: [dot1, dot2]);
+
+      final selectedState = state.selectDot(dot1);
+      expect(selectedState.selectedDot, dot1);
+      expect(selectedState.selectedRectangleId, isNull);
+    });
+
+    test('DrawingState clearDotSelection works correctly', () {
+      final dot1 = const Offset(10, 10);
+      final state = DrawingState(dots: [dot1], selectedDot: dot1);
+
+      final clearedState = state.clearDotSelection();
+      expect(clearedState.selectedDot, isNull);
+    });
+
+    test('DrawingState clearAllSelections works correctly', () {
+      final dot1 = const Offset(10, 10);
+      final rect1 = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(10, 10, 50, 50),
+        createdAt: DateTime(2025, 1, 1),
+      );
+      final state = DrawingState(
+        dots: [dot1],
+        rectangles: [rect1],
+        selectedDot: dot1,
+        selectedRectangleId: 'rect1',
+      );
+
+      final clearedState = state.clearAllSelections();
+      expect(clearedState.selectedDot, isNull);
+      expect(clearedState.selectedRectangleId, isNull);
+      expect(clearedState.rectangles.first.isSelected, false);
+    });
+
+    test('DrawingState hasSelectedDots getter returns correct value', () {
+      final dot1 = const Offset(10, 10);
+      final stateWithSelection = DrawingState(selectedDot: dot1);
+      final stateWithoutSelection = const DrawingState();
+
+      expect(stateWithSelection.hasSelectedDots, true);
+      expect(stateWithoutSelection.hasSelectedDots, false);
+    });
+
+    test('DrawingState hasSelectedShapes getter returns correct value', () {
+      final dot1 = const Offset(10, 10);
+      final rect1 = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(10, 10, 50, 50),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      final stateWithDotSelection = DrawingState(selectedDot: dot1);
+      final stateWithRectSelection = DrawingState(
+        rectangles: [rect1.copyWith(isSelected: true)],
+        selectedRectangleId: 'rect1',
+      );
+      final stateWithoutSelection = const DrawingState();
+
+      expect(stateWithDotSelection.hasSelectedShapes, true);
+      expect(stateWithRectSelection.hasSelectedShapes, true);
+      expect(stateWithoutSelection.hasSelectedShapes, false);
+    });
+
+    test('DrawingState selection methods clear other selections', () {
+      final dot1 = const Offset(10, 10);
+      final rect1 = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(10, 10, 50, 50),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      // Start with rectangle selected
+      final stateWithRectSelection = DrawingState(
+        rectangles: [rect1],
+        selectedRectangleId: 'rect1',
+      );
+
+      // Select dot - should clear rectangle selection
+      final stateWithDotSelection = stateWithRectSelection.selectDot(dot1);
+      expect(stateWithDotSelection.selectedDot, dot1);
+      expect(stateWithDotSelection.selectedRectangleId, isNull);
+
+      // Select rectangle - should clear dot selection
+      final stateWithRectSelectionAgain = stateWithDotSelection.selectRectangle('rect1');
+      expect(stateWithRectSelectionAgain.selectedDot, isNull);
+      expect(stateWithRectSelectionAgain.selectedRectangleId, 'rect1');
+    });
+
+    test('DrawingState prevents selecting dot while rectangle is selected', () {
+      final dot1 = const Offset(10, 10);
+      final rect1 = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(10, 10, 50, 50),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      // Start with rectangle selected
+      final stateWithRectSelection = DrawingState(
+        rectangles: [rect1.copyWith(isSelected: true)],
+        selectedRectangleId: 'rect1',
+      );
+
+      // Verify rectangle is selected
+      expect(stateWithRectSelection.hasSelectedRectangles, true);
+      expect(stateWithRectSelection.hasSelectedDots, false);
+      expect(stateWithRectSelection.hasSelectedShapes, true);
+
+      // Try to select dot while rectangle is selected
+      final stateWithBothSelected = stateWithRectSelection.selectDot(dot1);
+      
+      // Should clear rectangle selection and select dot instead
+      expect(stateWithBothSelected.selectedDot, dot1);
+      expect(stateWithBothSelected.selectedRectangleId, isNull);
+      expect(stateWithBothSelected.hasSelectedDots, true);
+      expect(stateWithBothSelected.hasSelectedRectangles, false);
+      expect(stateWithBothSelected.hasSelectedShapes, true);
+    });
   });
 }
