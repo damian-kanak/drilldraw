@@ -20,8 +20,8 @@ class DrawingModeButton extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return Tooltip(
-      message:
-          '${mode.displayName} Mode (${mode.keyboardShortcut})\n${mode.description}',
+      message: '${mode.displayName} Mode (${mode.keyboardShortcut})\n'
+          '${mode.description}',
       preferBelow: false,
       child: ElevatedButton(
         onPressed: onPressed,

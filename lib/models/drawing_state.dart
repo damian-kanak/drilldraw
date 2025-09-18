@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'rectangle.dart';
+
 import 'drawing_mode.dart';
+import 'rectangle.dart';
 
 /// Represents the current state of the drawing canvas
 class DrawingState {
@@ -157,7 +158,7 @@ class DrawingState {
     if (selectedRectangleId == null) return null;
     try {
       return rectangles.firstWhere((rect) => rect.id == selectedRectangleId);
-    } catch (e) {
+    } on StateError {
       return null;
     }
   }

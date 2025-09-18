@@ -22,7 +22,6 @@ class DrawingModeToolbar extends StatelessWidget {
         border: Border(
           bottom: BorderSide(
             color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
-            width: 1.0,
           ),
         ),
       ),
