@@ -1,0 +1,97 @@
+# Cursor AI Rules for DrillDraw Project
+
+## Git Workflow
+- ALWAYS create feature branches for new features - NEVER commit directly to main
+- **MANDATORY: All branch names MUST start with issue number** (e.g., `feature/122-description`)
+- Always create pull requests for feature branches
+- Keep main branch stable and deployable
+- **NO EXCEPTIONS**: Even small changes require issue numbers in branch names
+
+## Branch Naming Convention
+**REQUIRED: All feature branches MUST start with issue number**
+- `feature/issue-number-description` - New features (e.g., `feature/110-select-operation`) ✅ **REQUIRED FORMAT**
+- `bugfix/issue-number-description` - Bug fixes (e.g., `bugfix/104-rectangle-persistence`)
+- `hotfix/issue-number-description` - Critical production fixes
+- `refactor/issue-number-description` - Code refactoring (e.g., `refactor/122-cursor-branching`)
+- `docs/issue-number-description` - Documentation updates (e.g., `docs/122-workflow-docs`)
+- `test/issue-number-description` - Test improvements (e.g., `test/122-branch-validation`)
+- `chore/issue-number-description` - Maintenance tasks (e.g., `chore/122-dependency-updates`)
+
+**NO EXCEPTIONS: Always use issue number prefix**
+
+## Branch Creation Commands
+```bash
+# ALWAYS use issue number prefix - NO EXCEPTIONS
+git checkout -b feature/110-select-operation
+git checkout -b bugfix/104-rectangle-persistence
+git checkout -b refactor/122-cursor-branching
+git checkout -b docs/122-workflow-docs
+
+# Using GitHub CLI (automatically creates proper naming)
+gh issue develop 110 --checkout  # Creates feature/110-issue-title
+
+# NEVER create branches without issue numbers
+# ❌ git checkout -b feature/rectangle-styling
+# ✅ git checkout -b feature/122-rectangle-styling
+```
+
+## Commit Message Format
+- Use conventional commits: `type(scope): description`
+- Types: feat, fix, docs, style, refactor, test, chore
+- Scopes: rectangle, dot, canvas, ui, test, etc.
+- Examples:
+  - `feat(rectangle): add selection highlighting`
+  - `fix(canvas): resolve rectangle persistence issue`
+  - `style(ui): update rectangle colors to match dots`
+  - `test(rectangle): add creation and selection tests`
+
+## Development Workflow
+1. **Start**: `git checkout -b feature/issue-number-description`
+2. **Develop**: Implement feature with comprehensive tests
+3. **Test**: Run `flutter test` and ensure all tests pass
+4. **Format**: Run `flutter format .` to format code
+5. **Commit**: Use conventional commit messages
+6. **Push**: Push feature branch to remote
+7. **PR**: Create pull request with detailed description
+8. **Review**: Address review feedback
+9. **Merge**: Merge to main after approval
+
+## Code Quality Standards
+- **Tests**: Always write tests for new functionality
+- **Flutter**: Follow Flutter/Dart best practices and conventions
+- **Naming**: Use meaningful variable, function, and class names
+- **Comments**: Add comments for complex logic and business rules
+- **Functions**: Keep functions small and focused (max 20-30 lines)
+- **Imports**: Organize imports (dart, flutter, packages, local)
+- **Constants**: Use AppConstants for all magic numbers and colors
+- **Error Handling**: Implement proper error handling and validation
+
+## Project Structure
+- `lib/models/` - Data models and state management
+- `lib/painters/` - Custom painters for canvas rendering
+- `lib/widgets/` - Reusable UI components
+- `lib/services/` - Business logic and external services
+- `lib/constants/` - Application constants and configuration
+- `lib/utils/` - Utility functions and helpers
+- `test/` - Unit and widget tests organized by feature
+
+## Testing Requirements
+- Unit tests for all models and services
+- Widget tests for UI components
+- Integration tests for user workflows
+- Performance tests for canvas operations
+- Accessibility tests for UI components
+
+## Performance Guidelines
+- Optimize canvas painting operations
+- Use const constructors where possible
+- Implement proper shouldRepaint logic
+- Avoid unnecessary rebuilds
+- Profile performance for large datasets
+
+## Accessibility Requirements
+- Semantic labels for all interactive elements
+- Keyboard navigation support
+- Screen reader compatibility
+- High contrast mode support
+- Focus management for canvas interactions
