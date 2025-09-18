@@ -13,6 +13,9 @@ class DotCanvas extends StatelessWidget {
   final Function(Offset) onRectangleCreationUpdate;
   final Function(Offset) onRectangleCreationEnd;
   final Function(Offset) onShapeSelected;
+  final Function(Offset) onMoveStart;
+  final Function(Offset) onMoveUpdate;
+  final Function(Offset) onMoveEnd;
   final GlobalKey canvasKey;
 
   const DotCanvas({
@@ -23,6 +26,9 @@ class DotCanvas extends StatelessWidget {
     required this.onRectangleCreationUpdate,
     required this.onRectangleCreationEnd,
     required this.onShapeSelected,
+    required this.onMoveStart,
+    required this.onMoveUpdate,
+    required this.onMoveEnd,
     required this.canvasKey,
   });
 
@@ -65,33 +71,67 @@ class DotCanvas extends StatelessWidget {
               }
             },
             onPanStart: (DragStartDetails details) {
-              if (drawingState.drawingMode == DrawingMode.rectangle) {
-                final RenderBox renderBox =
-                    canvasKey.currentContext!.findRenderObject() as RenderBox;
-                final localPosition = renderBox.globalToLocal(
-                  details.globalPosition,
-                );
-                onRectangleCreationStart(localPosition);
+              final RenderBox renderBox =
+                  canvasKey.currentContext!.findRenderObject() as RenderBox;
+              final localPosition = renderBox.globalToLocal(
+                details.globalPosition,
+              );
+
+              switch (drawingState.drawingMode) {
+                case DrawingMode.rectangle:
+                  onRectangleCreationStart(localPosition);
+                  break;
+                case DrawingMode.select:
+                  // Check if we're starting to move a selected rectangle
+                  if (drawingState.hasSelectedRectangles &&
+                      !drawingState.isMoving) {
+                    onMoveStart(localPosition);
+                  }
+                  break;
+                default:
+                  break;
               }
             },
             onPanUpdate: (DragUpdateDetails details) {
-              if (drawingState.drawingMode == DrawingMode.rectangle) {
-                final RenderBox renderBox =
-                    canvasKey.currentContext!.findRenderObject() as RenderBox;
-                final localPosition = renderBox.globalToLocal(
-                  details.globalPosition,
-                );
-                onRectangleCreationUpdate(localPosition);
+              final RenderBox renderBox =
+                  canvasKey.currentContext!.findRenderObject() as RenderBox;
+              final localPosition = renderBox.globalToLocal(
+                details.globalPosition,
+              );
+
+              switch (drawingState.drawingMode) {
+                case DrawingMode.rectangle:
+                  onRectangleCreationUpdate(localPosition);
+                  break;
+                case DrawingMode.select:
+                  // Update move operation if we're currently moving
+                  if (drawingState.isMoving) {
+                    onMoveUpdate(localPosition);
+                  }
+                  break;
+                default:
+                  break;
               }
             },
             onPanEnd: (DragEndDetails details) {
-              if (drawingState.drawingMode == DrawingMode.rectangle) {
-                final RenderBox renderBox =
-                    canvasKey.currentContext!.findRenderObject() as RenderBox;
-                final localPosition = renderBox.globalToLocal(
-                  details.globalPosition,
-                );
-                onRectangleCreationEnd(localPosition);
+              final RenderBox renderBox =
+                  canvasKey.currentContext!.findRenderObject() as RenderBox;
+              final localPosition = renderBox.globalToLocal(
+                details.globalPosition,
+              );
+
+              switch (drawingState.drawingMode) {
+                case DrawingMode.rectangle:
+                  onRectangleCreationEnd(localPosition);
+                  break;
+                case DrawingMode.select:
+                  // End move operation if we're currently moving
+                  if (drawingState.isMoving) {
+                    onMoveEnd(localPosition);
+                  }
+                  break;
+                default:
+                  break;
               }
             },
             child: CustomPaint(

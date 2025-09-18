@@ -12,6 +12,8 @@ class DrawingState {
   final DrawingMode drawingMode;
   final bool isDrawing;
   final Rect? dragPreview;
+  final bool isMoving;
+  final Offset? moveStartPosition;
 
   const DrawingState({
     this.dots = const [],
@@ -21,6 +23,8 @@ class DrawingState {
     this.drawingMode = DrawingMode.dot,
     this.isDrawing = false,
     this.dragPreview,
+    this.isMoving = false,
+    this.moveStartPosition,
   });
 
   /// Create a copy of this state with updated values
@@ -32,9 +36,12 @@ class DrawingState {
     DrawingMode? drawingMode,
     bool? isDrawing,
     Rect? dragPreview,
+    bool? isMoving,
+    Offset? moveStartPosition,
     bool clearSelectedDot = false,
     bool clearSelectedRectangleId = false,
     bool clearDragPreview = false,
+    bool clearMoveStartPosition = false,
   }) {
     return DrawingState(
       dots: dots ?? this.dots,
@@ -46,6 +53,10 @@ class DrawingState {
       drawingMode: drawingMode ?? this.drawingMode,
       isDrawing: isDrawing ?? this.isDrawing,
       dragPreview: clearDragPreview ? null : (dragPreview ?? this.dragPreview),
+      isMoving: isMoving ?? this.isMoving,
+      moveStartPosition: clearMoveStartPosition
+          ? null
+          : (moveStartPosition ?? this.moveStartPosition),
     );
   }
 
@@ -176,6 +187,47 @@ class DrawingState {
   /// Clear the drag preview
   DrawingState clearDragPreview() {
     return copyWith(clearDragPreview: true);
+  }
+
+  /// Start moving a selected rectangle
+  DrawingState startMoveOperation(Offset startPosition) {
+    if (selectedRectangleId == null) return this;
+
+    return copyWith(
+      isMoving: true,
+      moveStartPosition: startPosition,
+    );
+  }
+
+  /// Update the position of the rectangle being moved
+  DrawingState updateMoveOperation(Offset currentPosition) {
+    if (!isMoving || moveStartPosition == null || selectedRectangleId == null) {
+      return this;
+    }
+
+    final delta = currentPosition - moveStartPosition!;
+    final updatedRectangles = rectangles.map((rect) {
+      if (rect.id == selectedRectangleId) {
+        return rect.copyWith(
+          bounds: rect.bounds.translate(delta.dx, delta.dy),
+        );
+      }
+      return rect;
+    }).toList();
+
+    return copyWith(
+      rectangles: updatedRectangles,
+      moveStartPosition: currentPosition, // Update start position for next
+      // delta
+    );
+  }
+
+  /// End the move operation
+  DrawingState endMoveOperation() {
+    return copyWith(
+      isMoving: false,
+      clearMoveStartPosition: true,
+    );
   }
 
   /// Get the number of dots currently on the canvas

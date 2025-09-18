@@ -317,4 +317,140 @@ void main() {
       expect(stateWithBothSelected.hasSelectedShapes, true);
     });
   });
+
+  group('Move Operations', () {
+    test('startMoveOperation sets isMoving and moveStartPosition', () {
+      const startPosition = Offset(10, 10);
+      final rect = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(0, 0, 50, 50),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      final state = DrawingState(
+        rectangles: [rect.copyWith(isSelected: true)],
+        selectedRectangleId: 'rect1',
+      );
+
+      final moveState = state.startMoveOperation(startPosition);
+
+      expect(moveState.isMoving, true);
+      expect(moveState.moveStartPosition, startPosition);
+    });
+
+    test('startMoveOperation does nothing if no rectangle selected', () {
+      const startPosition = Offset(10, 10);
+      final state = const DrawingState();
+
+      final moveState = state.startMoveOperation(startPosition);
+
+      expect(moveState, equals(state));
+    });
+
+    test('updateMoveOperation moves selected rectangle', () {
+      const startPosition = Offset(10, 10);
+      const currentPosition = Offset(30, 30);
+      const expectedDelta = Offset(20, 20);
+
+      final rect = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(0, 0, 50, 50),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      final initialState = DrawingState(
+        rectangles: [rect.copyWith(isSelected: true)],
+        selectedRectangleId: 'rect1',
+        isMoving: true,
+        moveStartPosition: startPosition,
+      );
+
+      final updatedState = initialState.updateMoveOperation(currentPosition);
+
+      expect(updatedState.rectangles.first.bounds,
+          const Rect.fromLTWH(20, 20, 50, 50));
+      expect(updatedState.moveStartPosition, currentPosition);
+    });
+
+    test('updateMoveOperation does nothing if not moving', () {
+      const currentPosition = Offset(30, 30);
+      final rect = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(0, 0, 50, 50),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      final state = DrawingState(
+        rectangles: [rect.copyWith(isSelected: true)],
+        selectedRectangleId: 'rect1',
+        isMoving: false,
+      );
+
+      final updatedState = state.updateMoveOperation(currentPosition);
+
+      expect(updatedState, equals(state));
+    });
+
+    test('endMoveOperation clears move state', () {
+      const startPosition = Offset(10, 10);
+      final rect = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(0, 0, 50, 50),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      final moveState = DrawingState(
+        rectangles: [rect.copyWith(isSelected: true)],
+        selectedRectangleId: 'rect1',
+        isMoving: true,
+        moveStartPosition: startPosition,
+      );
+
+      final endState = moveState.endMoveOperation();
+
+      expect(endState.isMoving, false);
+      expect(endState.moveStartPosition, isNull);
+    });
+
+    test('complete move operation workflow', () {
+      const startPosition = Offset(10, 10);
+      const midPosition = Offset(25, 25);
+      const endPosition = Offset(40, 40);
+
+      final rect = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(0, 0, 50, 50),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      // Start move operation
+      final initialState = DrawingState(
+        rectangles: [rect.copyWith(isSelected: true)],
+        selectedRectangleId: 'rect1',
+      );
+
+      final startState = initialState.startMoveOperation(startPosition);
+      expect(startState.isMoving, true);
+      expect(startState.moveStartPosition, startPosition);
+
+      // Update move operation
+      final midState = startState.updateMoveOperation(midPosition);
+      expect(midState.rectangles.first.bounds,
+          const Rect.fromLTWH(15, 15, 50, 50));
+      expect(midState.moveStartPosition, midPosition);
+
+      // Final update
+      final finalState = midState.updateMoveOperation(endPosition);
+      expect(finalState.rectangles.first.bounds,
+          const Rect.fromLTWH(30, 30, 50, 50));
+      expect(finalState.moveStartPosition, endPosition);
+
+      // End move operation
+      final endState = finalState.endMoveOperation();
+      expect(endState.isMoving, false);
+      expect(endState.moveStartPosition, isNull);
+      expect(endState.rectangles.first.bounds,
+          const Rect.fromLTWH(30, 30, 50, 50)); // Position should remain
+    });
+  });
 }
