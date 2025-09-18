@@ -201,6 +201,94 @@ gh issue develop 123 --checkout # Create branch from issue
 - **Optimize painting operations** in custom painters
 - **Cache expensive calculations** when possible
 
+## Flutter-Specific Best Practices
+- **Use const constructors** wherever possible for performance optimization
+- **Implement proper dispose()** methods to prevent memory leaks
+- **Use RepaintBoundary** for expensive widget subtrees to limit repaints
+- **Optimize CustomPainter** with efficient shouldRepaint logic
+- **Use proper keys** for widget identity and performance (ValueKey, ObjectKey)
+- **Implement proper gesture handling** with GestureDetector and appropriate callbacks
+- **Choose appropriate widget types** (StatelessWidget vs StatefulWidget vs RenderObjectWidget)
+- **Follow Material Design** guidelines for UI consistency and user experience
+- **Use proper state management** patterns (setState, Provider, Riverpod, Bloc)
+- **Implement proper error boundaries** with ErrorWidget.builder
+- **Use efficient list rendering** with ListView.builder for large datasets
+- **Optimize image handling** with proper caching and sizing
+- **Implement proper navigation** with named routes and proper back stack management
+- **Use appropriate animation** controllers and avoid unnecessary rebuilds
+- **Implement proper theming** with ThemeData and consistent color schemes
+- **Use proper text styling** with TextTheme and consistent typography
+- **Implement proper responsive design** with MediaQuery and LayoutBuilder
+- **Use proper asset management** with pubspec.yaml and asset bundles
+- **Implement proper localization** support for international users
+- **Use proper debugging tools** (Flutter Inspector, DevTools, debugPrint)
+
+## Canvas-Specific Guidelines
+- **Optimize hit testing** for large numbers of shapes using spatial indexing
+- **Use efficient collision detection** algorithms (AABB, spatial partitioning)
+- **Implement proper gesture handling** for touch/mouse events with appropriate thresholds
+- **Handle coordinate system** transformations correctly (local vs global coordinates)
+- **Optimize painting operations** for smooth performance (avoid unnecessary redraws)
+- **Implement proper selection feedback** for user interaction (visual indicators)
+- **Handle edge cases** (empty canvas, single shapes, overlapping elements)
+- **Use appropriate canvas sizes** and viewport management for different screen sizes
+- **Implement proper zoom/pan** functionality when needed with coordinate transformations
+- **Optimize CustomPainter** with efficient shouldRepaint logic to minimize redraws
+- **Use proper paint objects** and avoid creating new Paint instances in paint() methods
+- **Implement efficient shape rendering** with appropriate anti-aliasing settings
+- **Handle high-DPI displays** correctly with proper pixel ratio calculations
+- **Use proper clipping** to improve performance and prevent overflow
+- **Implement proper caching** for expensive drawing operations when possible
+- **Handle touch events** with appropriate hit testing and gesture recognition
+- **Use proper coordinate systems** for different input devices (touch vs mouse)
+- **Implement proper undo/redo** functionality with state snapshots
+- **Handle memory management** for large numbers of drawn elements
+- **Use proper debugging** with canvas overlay tools for development
+
+## Testing Strategy & Guidelines
+- **Unit tests** for all business logic and models (DrawingState, Rectangle, etc.)
+- **Widget tests** for UI components and user interactions
+- **Integration tests** for complete user workflows (drawing, selecting, moving)
+- **Performance tests** for canvas operations with large datasets
+- **Accessibility tests** for screen reader compatibility and keyboard navigation
+- **Golden tests** for UI consistency across platforms and screen sizes
+- **Test coverage** minimum 80% for production code
+- **Mock external dependencies** in tests to ensure isolation
+- **Test edge cases** and error conditions thoroughly
+- **Use realistic test data** that matches production scenarios
+- **Automate test execution** in CI/CD pipeline
+- **Document test scenarios** and expected behaviors
+- **Test canvas operations** with various shape counts and complexities
+- **Validate gesture handling** with different input methods (touch, mouse)
+- **Test state management** for complex operations (move, resize, delete)
+- **Verify error handling** and user feedback mechanisms
+- **Test performance** under different device capabilities
+- **Validate accessibility** with assistive technologies
+- **Test cross-platform** compatibility (web, mobile, desktop)
+- **Regression testing** after each change to prevent breaking existing functionality
+
+## Code Review Guidelines
+- **Review for logic correctness** and edge cases in business logic
+- **Check test coverage** for new functionality (aim for 80%+ coverage)
+- **Verify performance impact** for canvas operations and large datasets
+- **Ensure accessibility compliance** for UI changes and interactions
+- **Validate error handling** and user feedback mechanisms
+- **Check for code duplication** and suggest refactoring opportunities
+- **Verify documentation** is updated appropriately (comments, README, etc.)
+- **Test with realistic data** to catch edge cases and performance issues
+- **Review security implications** of new features and data handling
+- **Check for memory leaks** in long-running operations and dispose methods
+- **Validate state management** patterns are consistent and efficient
+- **Review UI/UX consistency** with existing design patterns and Material Design
+- **Check Flutter best practices** (const constructors, proper keys, etc.)
+- **Verify canvas optimization** (shouldRepaint logic, efficient painting)
+- **Review gesture handling** for proper touch/mouse event processing
+- **Validate coordinate systems** and transformations for canvas operations
+- **Check for proper null safety** and defensive programming practices
+- **Review commit message quality** and conventional commit format
+- **Verify branch naming** follows issue number conventions
+- **Ensure PR description** includes acceptance criteria and testing notes
+
 ## Documentation Standards
 - **Comment complex algorithms** (e.g., hit testing, collision detection)
 - **Document public APIs** with dartdoc comments
