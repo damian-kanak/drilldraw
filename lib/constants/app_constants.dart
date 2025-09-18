@@ -9,10 +9,9 @@ class AppConstants {
   static const Color dotBorderColor = Colors.deepPurple;
 
   // Rectangle configuration
-  static const double rectangleStrokeWidth = 2.0;
-  static const Color rectangleFillColor =
-      Color(0x4D2196F3); // Colors.blue.withOpacity(0.3)
-  static const Color rectangleBorderColor = Colors.blue;
+  static const double rectangleStrokeWidth = 2.0; // Match dots
+  static const Color rectangleFillColor = Colors.deepPurple; // Match dots
+  static const Color rectangleBorderColor = Colors.deepPurple; // Match dots
   static const Color rectangleSelectedColor = Colors.orange;
   static const double rectangleMinSize = 10.0;
 
