@@ -58,4 +58,10 @@ class CombinedPainter extends CustomPainter {
     final dotPainter = DotPainter(drawingState);
     return dotPainter.getDotsInArea(area);
   }
+
+  /// Helper method to get the resize handle at a specific point
+  String? getResizeHandleAt(Offset point) {
+    final rectanglePainter = RectanglePainter(drawingState);
+    return rectanglePainter.getResizeHandleAt(point);
+  }
 }

@@ -16,6 +16,9 @@ class DotCanvas extends StatelessWidget {
   final Function(Offset) onMoveStart;
   final Function(Offset) onMoveUpdate;
   final Function(Offset) onMoveEnd;
+  final Function(String, Offset) onResizeStart;
+  final Function(Offset) onResizeUpdate;
+  final Function(Offset) onResizeEnd;
   final GlobalKey canvasKey;
 
   const DotCanvas({
@@ -29,6 +32,9 @@ class DotCanvas extends StatelessWidget {
     required this.onMoveStart,
     required this.onMoveUpdate,
     required this.onMoveEnd,
+    required this.onResizeStart,
+    required this.onResizeUpdate,
+    required this.onResizeEnd,
     required this.canvasKey,
   });
 
@@ -63,7 +69,15 @@ class DotCanvas extends StatelessWidget {
                   onRectangleCreationStart(localPosition);
                   break;
                 case DrawingMode.select:
-                  onShapeSelected(localPosition);
+                  // Check for resize handle first
+                  final combinedPainter = CombinedPainter(drawingState);
+                  final resizeHandle =
+                      combinedPainter.getResizeHandleAt(localPosition);
+                  if (resizeHandle != null) {
+                    onResizeStart(resizeHandle, localPosition);
+                  } else {
+                    onShapeSelected(localPosition);
+                  }
                   break;
                 case DrawingMode.arrow:
                   // TODO: Implement arrow creation
@@ -82,6 +96,11 @@ class DotCanvas extends StatelessWidget {
                   onRectangleCreationStart(localPosition);
                   break;
                 case DrawingMode.select:
+                  // Check if we're starting to resize
+                  if (drawingState.isResizing) {
+                    // Resize operation already started in onTapDown
+                    break;
+                  }
                   // Check if we're starting to move a selected rectangle
                   if (drawingState.hasSelectedRectangles &&
                       !drawingState.isMoving) {
@@ -104,8 +123,12 @@ class DotCanvas extends StatelessWidget {
                   onRectangleCreationUpdate(localPosition);
                   break;
                 case DrawingMode.select:
+                  // Update resize operation if we're currently resizing
+                  if (drawingState.isResizing) {
+                    onResizeUpdate(localPosition);
+                  }
                   // Update move operation if we're currently moving
-                  if (drawingState.isMoving) {
+                  else if (drawingState.isMoving) {
                     onMoveUpdate(localPosition);
                   }
                   break;
@@ -125,8 +148,12 @@ class DotCanvas extends StatelessWidget {
                   onRectangleCreationEnd(localPosition);
                   break;
                 case DrawingMode.select:
+                  // End resize operation if we're currently resizing
+                  if (drawingState.isResizing) {
+                    onResizeEnd(localPosition);
+                  }
                   // End move operation if we're currently moving
-                  if (drawingState.isMoving) {
+                  else if (drawingState.isMoving) {
                     onMoveEnd(localPosition);
                   }
                   break;

@@ -50,6 +50,14 @@ class RectanglePainter extends CustomPainter {
       }
     }
 
+    // Draw resize handles for selected rectangle
+    if (drawingState.hasSelectedRectangles && !drawingState.isDrawing) {
+      final selectedRect = drawingState.selectedRectangle;
+      if (selectedRect != null) {
+        _drawResizeHandles(canvas, selectedRect.bounds);
+      }
+    }
+
     // Draw drag preview if currently drawing
     if (drawingState.isDrawing && drawingState.dragPreview != null) {
       _drawDragPreview(canvas, drawingState.dragPreview!);
@@ -109,5 +117,124 @@ class RectanglePainter extends CustomPainter {
     return drawingState.rectangles
         .where((rectangle) => rectangle.bounds.overlaps(area))
         .toList();
+  }
+
+  /// Draws resize handles around a rectangle
+  void _drawResizeHandles(Canvas canvas, Rect bounds) {
+    const double handleSize = 8.0;
+    const double handleHalfSize = handleSize / 2;
+
+    // Paint for resize handles
+    final handlePaint = Paint()
+      ..color = AppConstants.rectangleSelectedColor
+      ..style = PaintingStyle.fill;
+
+    final handleBorderPaint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.0;
+
+    // Corner handles
+    final handles = [
+      // Corners
+      Offset(bounds.left - handleHalfSize, bounds.top - handleHalfSize),
+      Offset(bounds.right + handleHalfSize, bounds.top - handleHalfSize),
+      Offset(bounds.left - handleHalfSize, bounds.bottom + handleHalfSize),
+      Offset(bounds.right + handleHalfSize, bounds.bottom + handleHalfSize),
+      // Sides
+      Offset(bounds.center.dx, bounds.top - handleHalfSize),
+      Offset(bounds.center.dx, bounds.bottom + handleHalfSize),
+      Offset(bounds.left - handleHalfSize, bounds.center.dy),
+      Offset(bounds.right + handleHalfSize, bounds.center.dy),
+    ];
+
+    for (final handle in handles) {
+      final handleRect = Rect.fromCenter(
+        center: handle,
+        width: handleSize,
+        height: handleSize,
+      );
+
+      // Draw handle background
+      canvas.drawRect(handleRect, handlePaint);
+      // Draw handle border
+      canvas.drawRect(handleRect, handleBorderPaint);
+    }
+  }
+
+  /// Returns the resize handle at a given point, or null if none found
+  String? getResizeHandleAt(Offset point) {
+    if (!drawingState.hasSelectedRectangles) return null;
+
+    final selectedRect = drawingState.selectedRectangle;
+    if (selectedRect == null) return null;
+
+    const double handleSize = 8.0;
+    const double handleHalfSize = handleSize / 2;
+    final bounds = selectedRect.bounds;
+
+    // Check corner handles
+    final cornerHandles = [
+      (
+        'topLeft',
+        Offset(
+          bounds.left - handleHalfSize,
+          bounds.top - handleHalfSize,
+        )
+      ),
+      (
+        'topRight',
+        Offset(
+          bounds.right + handleHalfSize,
+          bounds.top - handleHalfSize,
+        )
+      ),
+      (
+        'bottomLeft',
+        Offset(
+          bounds.left - handleHalfSize,
+          bounds.bottom + handleHalfSize,
+        )
+      ),
+      (
+        'bottomRight',
+        Offset(
+          bounds.right + handleHalfSize,
+          bounds.bottom + handleHalfSize,
+        )
+      ),
+    ];
+
+    for (final (handleName, handlePos) in cornerHandles) {
+      final handleRect = Rect.fromCenter(
+        center: handlePos,
+        width: handleSize,
+        height: handleSize,
+      );
+      if (handleRect.contains(point)) {
+        return handleName;
+      }
+    }
+
+    // Check side handles
+    final sideHandles = [
+      ('top', Offset(bounds.center.dx, bounds.top - handleHalfSize)),
+      ('bottom', Offset(bounds.center.dx, bounds.bottom + handleHalfSize)),
+      ('left', Offset(bounds.left - handleHalfSize, bounds.center.dy)),
+      ('right', Offset(bounds.right + handleHalfSize, bounds.center.dy)),
+    ];
+
+    for (final (handleName, handlePos) in sideHandles) {
+      final handleRect = Rect.fromCenter(
+        center: handlePos,
+        width: handleSize,
+        height: handleSize,
+      );
+      if (handleRect.contains(point)) {
+        return handleName;
+      }
+    }
+
+    return null;
   }
 }

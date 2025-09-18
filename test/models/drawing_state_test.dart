@@ -453,4 +453,168 @@ void main() {
           const Rect.fromLTWH(30, 30, 50, 50)); // Position should remain
     });
   });
+
+  group('Resize Operations', () {
+    test('startResizeOperation sets resize state correctly', () {
+      const handle = 'topLeft';
+      const startPosition = Offset(10, 10);
+      final rect = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(50, 50, 100, 100),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      final state = DrawingState(
+        rectangles: [rect.copyWith(isSelected: true)],
+        selectedRectangleId: 'rect1',
+      );
+
+      final resizeState = state.startResizeOperation(handle, startPosition);
+
+      expect(resizeState.isResizing, true);
+      expect(resizeState.resizeHandle, handle);
+      expect(resizeState.resizeStartPosition, startPosition);
+      expect(resizeState.resizeStartBounds, rect.bounds);
+    });
+
+    test('startResizeOperation does nothing if no rectangle selected', () {
+      const handle = 'topLeft';
+      const startPosition = Offset(10, 10);
+      final state = const DrawingState();
+
+      final resizeState = state.startResizeOperation(handle, startPosition);
+
+      expect(resizeState, equals(state));
+    });
+
+    test('updateResizeOperation resizes selected rectangle', () {
+      const handle = 'bottomRight';
+      const startPosition = Offset(100, 100);
+      const currentPosition = Offset(150, 150);
+
+      final rect = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(50, 50, 100, 100),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      final initialState = DrawingState(
+        rectangles: [rect.copyWith(isSelected: true)],
+        selectedRectangleId: 'rect1',
+        isResizing: true,
+        resizeHandle: handle,
+        resizeStartPosition: startPosition,
+        resizeStartBounds: rect.bounds,
+      );
+
+      final updatedState = initialState.updateResizeOperation(currentPosition);
+
+      // Rectangle should be resized from 100x100 to 150x150
+      expect(updatedState.rectangles.first.bounds,
+          const Rect.fromLTWH(50, 50, 150, 150));
+    });
+
+    test('updateResizeOperation does nothing if not resizing', () {
+      const currentPosition = Offset(150, 150);
+      final rect = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(50, 50, 100, 100),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      final state = DrawingState(
+        rectangles: [rect.copyWith(isSelected: true)],
+        selectedRectangleId: 'rect1',
+        isResizing: false,
+      );
+
+      final updatedState = state.updateResizeOperation(currentPosition);
+
+      expect(updatedState, equals(state));
+    });
+
+    test('endResizeOperation clears resize state', () {
+      const handle = 'topLeft';
+      const startPosition = Offset(10, 10);
+      final rect = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(50, 50, 100, 100),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      final resizeState = DrawingState(
+        rectangles: [rect.copyWith(isSelected: true)],
+        selectedRectangleId: 'rect1',
+        isResizing: true,
+        resizeHandle: handle,
+        resizeStartPosition: startPosition,
+        resizeStartBounds: rect.bounds,
+      );
+
+      final endState = resizeState.endResizeOperation();
+
+      expect(endState.isResizing, false);
+      expect(endState.resizeHandle, isNull);
+      expect(endState.resizeStartPosition, isNull);
+      expect(endState.resizeStartBounds, isNull);
+    });
+
+    test('resize handles work correctly', () {
+      final rect = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(50, 50, 100, 100),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      final state = DrawingState(
+        rectangles: [rect.copyWith(isSelected: true)],
+        selectedRectangleId: 'rect1',
+      );
+
+      // Test topLeft resize
+      final topLeftState =
+          state.startResizeOperation('topLeft', const Offset(50, 50));
+      final topLeftResized =
+          topLeftState.updateResizeOperation(const Offset(40, 40));
+      expect(topLeftResized.rectangles.first.bounds,
+          const Rect.fromLTWH(40, 40, 110, 110));
+
+      // Test bottomRight resize
+      final bottomRightState = topLeftResized.startResizeOperation(
+          'bottomRight', const Offset(150, 150));
+      final bottomRightResized =
+          bottomRightState.updateResizeOperation(const Offset(160, 160));
+      expect(bottomRightResized.rectangles.first.bounds,
+          const Rect.fromLTWH(40, 40, 120, 120));
+    });
+
+    test('resize enforces minimum size', () {
+      const handle = 'bottomRight';
+      const startPosition = Offset(150, 150);
+      const currentPosition = Offset(40, 40); // Would make rectangle too small
+
+      final rect = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(50, 50, 100, 100),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      final initialState = DrawingState(
+        rectangles: [rect.copyWith(isSelected: true)],
+        selectedRectangleId: 'rect1',
+        isResizing: true,
+        resizeHandle: handle,
+        resizeStartPosition: startPosition,
+        resizeStartBounds: rect.bounds,
+      );
+
+      final updatedState = initialState.updateResizeOperation(currentPosition);
+
+      // Rectangle should maintain minimum size of 10x10
+      expect(updatedState.rectangles.first.bounds.width,
+          greaterThanOrEqualTo(10.0));
+      expect(updatedState.rectangles.first.bounds.height,
+          greaterThanOrEqualTo(10.0));
+    });
+  });
 }

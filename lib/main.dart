@@ -158,6 +158,24 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
     });
   }
 
+  void _startResizeOperation(String handle, Offset position) {
+    setState(() {
+      _drawingState = _drawingState.startResizeOperation(handle, position);
+    });
+  }
+
+  void _updateResizeOperation(Offset position) {
+    setState(() {
+      _drawingState = _drawingState.updateResizeOperation(position);
+    });
+  }
+
+  void _endResizeOperation(Offset position) {
+    setState(() {
+      _drawingState = _drawingState.endResizeOperation();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return KeyboardListener(
@@ -198,6 +216,9 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
                 onMoveStart: _startMoveOperation,
                 onMoveUpdate: _updateMoveOperation,
                 onMoveEnd: _endMoveOperation,
+                onResizeStart: _startResizeOperation,
+                onResizeUpdate: _updateResizeOperation,
+                onResizeEnd: _endResizeOperation,
                 canvasKey: _canvasKey,
               ),
             ),
