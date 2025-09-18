@@ -46,4 +46,16 @@ class CombinedPainter extends CustomPainter {
     final rectanglePainter = RectanglePainter(drawingState);
     return rectanglePainter.getRectanglesInArea(area);
   }
+
+  /// Helper method to get the dot at a specific point
+  Offset? getDotAt(Offset point) {
+    final dotPainter = DotPainter(drawingState);
+    return dotPainter.getDotAt(point);
+  }
+
+  /// Helper method to get all dots within a given area
+  List<Offset> getDotsInArea(Rect area) {
+    final dotPainter = DotPainter(drawingState);
+    return dotPainter.getDotsInArea(area);
+  }
 }

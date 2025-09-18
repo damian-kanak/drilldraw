@@ -125,5 +125,39 @@ void main() {
       expect(result.any((r) => r.id == 'rect1'), isTrue);
       expect(result.any((r) => r.id == 'rect2'), isTrue);
     });
+
+    test('getDotAt delegates to DotPainter', () {
+      const state = DrawingState(dots: [Offset(10, 10), Offset(50, 50)]);
+      const combinedPainter = CombinedPainter(state);
+
+      // Test clicking on first dot
+      final dot1 = combinedPainter.getDotAt(const Offset(10, 10));
+      expect(dot1, const Offset(10, 10));
+
+      // Test clicking on second dot
+      final dot2 = combinedPainter.getDotAt(const Offset(50, 50));
+      expect(dot2, const Offset(50, 50));
+
+      // Test clicking between dots
+      final noDot = combinedPainter.getDotAt(const Offset(30, 30));
+      expect(noDot, isNull);
+    });
+
+    test('getDotsInArea delegates to DotPainter', () {
+      const state = DrawingState(dots: [
+        Offset(10, 10),
+        Offset(50, 50),
+        Offset(100, 100),
+      ]);
+      const combinedPainter = CombinedPainter(state);
+
+      final area = const Rect.fromLTWH(0, 0, 60, 60);
+      final dotsInArea = combinedPainter.getDotsInArea(area);
+
+      expect(dotsInArea.length, 2);
+      expect(dotsInArea, contains(const Offset(10, 10)));
+      expect(dotsInArea, contains(const Offset(50, 50)));
+      expect(dotsInArea, isNot(contains(const Offset(100, 100))));
+    });
   });
 }
