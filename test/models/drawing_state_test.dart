@@ -617,4 +617,208 @@ void main() {
           greaterThanOrEqualTo(10.0));
     });
   });
+
+  group('Delete Operations', () {
+    test('deleteSelectedShapes removes selected dot', () {
+      const selectedDotPosition = Offset(50, 50);
+      final state = DrawingState(
+        dots: [const Offset(10, 10), selectedDotPosition, const Offset(20, 20)],
+        selectedDot: selectedDotPosition,
+      );
+
+      final deletedState = state.deleteSelectedShapes();
+
+      expect(deletedState.dots, hasLength(2));
+      expect(deletedState.dots, isNot(contains(selectedDotPosition)));
+      expect(deletedState.selectedDot, isNull);
+    });
+
+    test('deleteSelectedShapes removes selected rectangle', () {
+      final rect1 = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(10, 10, 50, 50),
+        createdAt: DateTime(2025, 1, 1),
+      );
+      final rect2 = Rectangle(
+        id: 'rect2',
+        bounds: const Rect.fromLTWH(100, 100, 50, 50),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      final state = DrawingState(
+        rectangles: [rect1, rect2],
+        selectedRectangleId: 'rect1',
+      );
+
+      final deletedState = state.deleteSelectedShapes();
+
+      expect(deletedState.rectangles, hasLength(1));
+      expect(deletedState.rectangles.first.id, 'rect2');
+      expect(deletedState.selectedRectangleId, isNull);
+    });
+
+    test('deleteSelectedShapes removes both selected dot and rectangle', () {
+      const selectedDotPosition = Offset(50, 50);
+      final rect = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(100, 100, 50, 50),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      final state = DrawingState(
+        dots: [const Offset(10, 10), selectedDotPosition],
+        rectangles: [rect],
+        selectedDot: selectedDotPosition,
+        selectedRectangleId: 'rect1',
+      );
+
+      final deletedState = state.deleteSelectedShapes();
+
+      expect(deletedState.dots, hasLength(1));
+      expect(deletedState.dots, isNot(contains(selectedDotPosition)));
+      expect(deletedState.rectangles, isEmpty);
+      expect(deletedState.selectedDot, isNull);
+      expect(deletedState.selectedRectangleId, isNull);
+    });
+
+    test('deleteSelectedShapes does nothing when no shapes selected', () {
+      final state = DrawingState(
+        dots: [const Offset(10, 10)],
+        rectangles: [
+          Rectangle(
+            id: 'rect1',
+            bounds: const Rect.fromLTWH(100, 100, 50, 50),
+            createdAt: DateTime(2025, 1, 1),
+          ),
+        ],
+      );
+
+      final deletedState = state.deleteSelectedShapes();
+
+      expect(deletedState.dots, hasLength(1));
+      expect(deletedState.rectangles, hasLength(1));
+    });
+
+    test('deleteDot removes specific dot and clears selection if needed', () {
+      const targetDot = Offset(50, 50);
+      final state = DrawingState(
+        dots: [const Offset(10, 10), targetDot, const Offset(20, 20)],
+        selectedDot: targetDot,
+      );
+
+      final deletedState = state.deleteDot(targetDot);
+
+      expect(deletedState.dots, hasLength(2));
+      expect(deletedState.dots, isNot(contains(targetDot)));
+      expect(deletedState.selectedDot, isNull);
+    });
+
+    test('deleteDot does not clear selection if different dot selected', () {
+      const targetDot = Offset(50, 50);
+      const selectedDot = Offset(10, 10);
+      final state = DrawingState(
+        dots: [selectedDot, targetDot, const Offset(20, 20)],
+        selectedDot: selectedDot,
+      );
+
+      final deletedState = state.deleteDot(targetDot);
+
+      expect(deletedState.dots, hasLength(2));
+      expect(deletedState.dots, isNot(contains(targetDot)));
+      expect(deletedState.selectedDot, selectedDot);
+    });
+
+    test(
+        'deleteRectangle removes specific rectangle and clears selection if needed',
+        () {
+      final rect1 = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(10, 10, 50, 50),
+        createdAt: DateTime(2025, 1, 1),
+      );
+      final rect2 = Rectangle(
+        id: 'rect2',
+        bounds: const Rect.fromLTWH(100, 100, 50, 50),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      final state = DrawingState(
+        rectangles: [rect1, rect2],
+        selectedRectangleId: 'rect1',
+      );
+
+      final deletedState = state.deleteRectangle('rect1');
+
+      expect(deletedState.rectangles, hasLength(1));
+      expect(deletedState.rectangles.first.id, 'rect2');
+      expect(deletedState.selectedRectangleId, isNull);
+    });
+
+    test(
+        'deleteRectangle does not clear selection if different rectangle selected',
+        () {
+      final rect1 = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(10, 10, 50, 50),
+        createdAt: DateTime(2025, 1, 1),
+      );
+      final rect2 = Rectangle(
+        id: 'rect2',
+        bounds: const Rect.fromLTWH(100, 100, 50, 50),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      final state = DrawingState(
+        rectangles: [rect1, rect2],
+        selectedRectangleId: 'rect2',
+      );
+
+      final deletedState = state.deleteRectangle('rect1');
+
+      expect(deletedState.rectangles, hasLength(1));
+      expect(deletedState.rectangles.first.id, 'rect2');
+      expect(deletedState.selectedRectangleId, 'rect2');
+    });
+
+    test('hasSelectedShapesToDelete returns true when dot is selected', () {
+      const selectedDot = Offset(50, 50);
+      final state = DrawingState(
+        dots: [const Offset(10, 10), selectedDot],
+        selectedDot: selectedDot,
+      );
+
+      expect(state.hasSelectedShapesToDelete, isTrue);
+    });
+
+    test('hasSelectedShapesToDelete returns true when rectangle is selected',
+        () {
+      final rect = Rectangle(
+        id: 'rect1',
+        bounds: const Rect.fromLTWH(10, 10, 50, 50),
+        createdAt: DateTime(2025, 1, 1),
+      );
+
+      final state = DrawingState(
+        rectangles: [rect],
+        selectedRectangleId: 'rect1',
+      );
+
+      expect(state.hasSelectedShapesToDelete, isTrue);
+    });
+
+    test('hasSelectedShapesToDelete returns false when no shapes selected', () {
+      final state = DrawingState(
+        dots: [const Offset(10, 10)],
+        rectangles: [
+          Rectangle(
+            id: 'rect1',
+            bounds: const Rect.fromLTWH(100, 100, 50, 50),
+            createdAt: DateTime(2025, 1, 1),
+          ),
+        ],
+      );
+
+      expect(state.hasSelectedShapesToDelete, isFalse);
+    });
+  });
 }

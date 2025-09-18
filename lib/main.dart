@@ -70,7 +70,20 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
   }
 
   void _handleKeyboardEvent(KeyEvent event) {
-    KeyboardService.handleKeyboardEvent(event, _clearDots, _changeDrawingMode);
+    KeyboardService.handleKeyboardEvent(
+      event,
+      _clearDots,
+      _changeDrawingMode,
+      onDeleteSelectedShapes: _deleteSelectedShapes,
+    );
+  }
+
+  void _deleteSelectedShapes() {
+    if (!_drawingState.hasSelectedShapesToDelete) return;
+
+    setState(() {
+      _drawingState = _drawingState.deleteSelectedShapes();
+    });
   }
 
   // Rectangle creation methods
