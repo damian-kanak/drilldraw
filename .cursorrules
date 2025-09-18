@@ -58,15 +58,16 @@ gh issue develop 110 --checkout  # Creates feature/110-issue-title
   - `#110: test(rectangle): add creation and selection tests`
 
 ## Development Workflow
-1. **Start**: `git checkout -b feature/issue-number-description`
-2. **Develop**: Implement feature with comprehensive tests
-3. **Test**: Run `flutter test` and ensure all tests pass
-4. **Format**: Run `flutter format .` to format code
-5. **Commit**: Use conventional commit messages
-6. **Push**: Push feature branch to remote
-7. **PR**: Create pull request with detailed description
-8. **Review**: Address review feedback
-9. **Merge**: Merge to main after approval
+1. **Prepare**: Follow Pre-Development Workflow (fetch, checkout main, pull latest)
+2. **Start**: `git checkout -b feature/issue-number-description`
+3. **Develop**: Implement feature with comprehensive tests
+4. **Test**: Run `flutter test` and ensure all tests pass
+5. **Format**: Run `flutter format .` to format code
+6. **Commit**: Use conventional commit messages
+7. **Push**: Push feature branch to remote
+8. **PR**: Create pull request with detailed description
+9. **Review**: Address review feedback
+10. **Merge**: Merge to main after approval
 
 ## Code Quality Standards
 - **Tests**: Always write tests for new functionality
@@ -107,3 +108,194 @@ gh issue develop 110 --checkout  # Creates feature/110-issue-title
 - Screen reader compatibility
 - High contrast mode support
 - Focus management for canvas interactions
+
+## Error Handling & Debugging Guidelines
+- **Always check CI status** before considering work complete
+- **Run tests locally** before pushing: `flutter test`
+- **Format code** before committing: `flutter format .`
+- **Analyze code** before committing: `flutter analyze`
+- **Handle merge conflicts** by rebasing on latest main
+- **Verify branch is up-to-date** before creating PRs
+- **Check pre-commit hooks** - they run automatically on commit
+- **Test with realistic data** to catch edge cases early
+- **Use debug prints** sparingly and remove before committing
+
+## Pull Request Best Practices
+- **Always check merge conflicts** before creating PR
+- **Use simple PR descriptions** to avoid shell parsing issues
+- **Avoid backticks in PR descriptions** (causes command substitution errors)
+- **Include acceptance criteria** in PR description
+- **Reference related issues** with "Resolves #123"
+- **Ensure CI passes** before requesting review
+- **Keep PRs focused** - one feature per PR
+- **Write descriptive titles** following conventional commit format
+- **Add screenshots** for UI changes when applicable
+
+## Essential Commands Reference
+```bash
+# Development workflow
+git fetch origin && git checkout main && git pull origin main
+git checkout -b feature/123-description
+
+# Testing & Quality
+flutter test                    # Run all tests
+flutter format .               # Format code
+flutter analyze               # Check for issues
+dart format --set-exit-if-changed .  # CI format check
+
+# Branch management
+git rebase origin/main         # Update branch with latest main
+git push --force-with-lease    # Force push after rebase
+gh pr create --title "..."     # Create PR with GitHub CLI
+
+# Issue management
+gh issue list --state open     # List open issues
+gh issue view 123             # View specific issue
+gh issue develop 123 --checkout # Create branch from issue
+```
+
+## Issue Management Guidelines
+- **Always create issues first** before starting development
+- **Use descriptive issue titles** that clearly state the feature/fix
+- **Include acceptance criteria** in issue descriptions
+- **Link related issues** when applicable
+- **Assign appropriate labels** (area/canvas, phase/MVP, etc.)
+- **Close issues** with PR merges using "Resolves #123"
+- **Update issue status** as development progresses
+- **Use GitHub CLI** for efficient issue management
+
+## Troubleshooting Guide
+### CI Failures
+- Format issues: Run `flutter format .`
+- Test failures: Run `flutter test` locally first
+- Analysis issues: Run `flutter analyze` and fix warnings
+- Dependency issues: Run `flutter pub get`
+
+### Merge Conflicts
+- Rebase on latest main: `git rebase origin/main`
+- Resolve conflicts manually
+- Force push: `git push --force-with-lease`
+- Verify branch is up-to-date before creating PR
+
+### PR Creation Errors
+- Avoid complex descriptions with backticks
+- Use simple, clear PR titles
+- Check branch is up-to-date first
+- Ensure CI passes before requesting review
+
+### Performance Issues
+- Profile canvas operations with Flutter DevTools
+- Check for memory leaks in long-running operations
+- Optimize shouldRepaint logic
+- Test with large datasets
+
+## Performance & Optimization Guidelines
+- **Profile canvas operations** for large datasets
+- **Use const constructors** where possible
+- **Implement shouldRepaint** logic efficiently
+- **Avoid unnecessary setState** calls
+- **Optimize gesture detection** for smooth interactions
+- **Test with realistic data sizes**
+- **Monitor memory usage** during development
+- **Use Flutter DevTools** for performance profiling
+- **Optimize painting operations** in custom painters
+- **Cache expensive calculations** when possible
+
+## Flutter-Specific Best Practices
+- **Use const constructors** wherever possible for performance optimization
+- **Implement proper dispose()** methods to prevent memory leaks
+- **Use RepaintBoundary** for expensive widget subtrees to limit repaints
+- **Optimize CustomPainter** with efficient shouldRepaint logic
+- **Use proper keys** for widget identity and performance (ValueKey, ObjectKey)
+- **Implement proper gesture handling** with GestureDetector and appropriate callbacks
+- **Choose appropriate widget types** (StatelessWidget vs StatefulWidget vs RenderObjectWidget)
+- **Follow Material Design** guidelines for UI consistency and user experience
+- **Use proper state management** patterns (setState, Provider, Riverpod, Bloc)
+- **Implement proper error boundaries** with ErrorWidget.builder
+- **Use efficient list rendering** with ListView.builder for large datasets
+- **Optimize image handling** with proper caching and sizing
+- **Implement proper navigation** with named routes and proper back stack management
+- **Use appropriate animation** controllers and avoid unnecessary rebuilds
+- **Implement proper theming** with ThemeData and consistent color schemes
+- **Use proper text styling** with TextTheme and consistent typography
+- **Implement proper responsive design** with MediaQuery and LayoutBuilder
+- **Use proper asset management** with pubspec.yaml and asset bundles
+- **Implement proper localization** support for international users
+- **Use proper debugging tools** (Flutter Inspector, DevTools, debugPrint)
+
+## Canvas-Specific Guidelines
+- **Optimize hit testing** for large numbers of shapes using spatial indexing
+- **Use efficient collision detection** algorithms (AABB, spatial partitioning)
+- **Implement proper gesture handling** for touch/mouse events with appropriate thresholds
+- **Handle coordinate system** transformations correctly (local vs global coordinates)
+- **Optimize painting operations** for smooth performance (avoid unnecessary redraws)
+- **Implement proper selection feedback** for user interaction (visual indicators)
+- **Handle edge cases** (empty canvas, single shapes, overlapping elements)
+- **Use appropriate canvas sizes** and viewport management for different screen sizes
+- **Implement proper zoom/pan** functionality when needed with coordinate transformations
+- **Optimize CustomPainter** with efficient shouldRepaint logic to minimize redraws
+- **Use proper paint objects** and avoid creating new Paint instances in paint() methods
+- **Implement efficient shape rendering** with appropriate anti-aliasing settings
+- **Handle high-DPI displays** correctly with proper pixel ratio calculations
+- **Use proper clipping** to improve performance and prevent overflow
+- **Implement proper caching** for expensive drawing operations when possible
+- **Handle touch events** with appropriate hit testing and gesture recognition
+- **Use proper coordinate systems** for different input devices (touch vs mouse)
+- **Implement proper undo/redo** functionality with state snapshots
+- **Handle memory management** for large numbers of drawn elements
+- **Use proper debugging** with canvas overlay tools for development
+
+## Testing Strategy & Guidelines
+- **Unit tests** for all business logic and models (DrawingState, Rectangle, etc.)
+- **Widget tests** for UI components and user interactions
+- **Integration tests** for complete user workflows (drawing, selecting, moving)
+- **Performance tests** for canvas operations with large datasets
+- **Accessibility tests** for screen reader compatibility and keyboard navigation
+- **Golden tests** for UI consistency across platforms and screen sizes
+- **Test coverage** minimum 80% for production code
+- **Mock external dependencies** in tests to ensure isolation
+- **Test edge cases** and error conditions thoroughly
+- **Use realistic test data** that matches production scenarios
+- **Automate test execution** in CI/CD pipeline
+- **Document test scenarios** and expected behaviors
+- **Test canvas operations** with various shape counts and complexities
+- **Validate gesture handling** with different input methods (touch, mouse)
+- **Test state management** for complex operations (move, resize, delete)
+- **Verify error handling** and user feedback mechanisms
+- **Test performance** under different device capabilities
+- **Validate accessibility** with assistive technologies
+- **Test cross-platform** compatibility (web, mobile, desktop)
+- **Regression testing** after each change to prevent breaking existing functionality
+
+## Code Review Guidelines
+- **Review for logic correctness** and edge cases in business logic
+- **Check test coverage** for new functionality (aim for 80%+ coverage)
+- **Verify performance impact** for canvas operations and large datasets
+- **Ensure accessibility compliance** for UI changes and interactions
+- **Validate error handling** and user feedback mechanisms
+- **Check for code duplication** and suggest refactoring opportunities
+- **Verify documentation** is updated appropriately (comments, README, etc.)
+- **Test with realistic data** to catch edge cases and performance issues
+- **Review security implications** of new features and data handling
+- **Check for memory leaks** in long-running operations and dispose methods
+- **Validate state management** patterns are consistent and efficient
+- **Review UI/UX consistency** with existing design patterns and Material Design
+- **Check Flutter best practices** (const constructors, proper keys, etc.)
+- **Verify canvas optimization** (shouldRepaint logic, efficient painting)
+- **Review gesture handling** for proper touch/mouse event processing
+- **Validate coordinate systems** and transformations for canvas operations
+- **Check for proper null safety** and defensive programming practices
+- **Review commit message quality** and conventional commit format
+- **Verify branch naming** follows issue number conventions
+- **Ensure PR description** includes acceptance criteria and testing notes
+
+## Documentation Standards
+- **Comment complex algorithms** (e.g., hit testing, collision detection)
+- **Document public APIs** with dartdoc comments
+- **Update README** for new features
+- **Include usage examples** in widget documentation
+- **Document breaking changes** in PR descriptions
+- **Write clear commit messages** explaining what and why
+- **Document configuration changes** in .cursorrules updates
+- **Include inline comments** for business logic
+- **Document edge cases** and error handling
