@@ -36,14 +36,26 @@ gh issue develop 110 --checkout  # Creates feature/110-issue-title
 ```
 
 ## Commit Message Format
-- Use conventional commits: `type(scope): description`
+- Start with issue number: `#123: type(scope): description`
+- Must include issue number for traceability
+- Use conventional commits format after issue number
 - Types: feat, fix, docs, style, refactor, test, chore
 - Scopes: rectangle, dot, canvas, ui, test, etc.
 - Examples:
-  - `feat(rectangle): add selection highlighting`
-  - `fix(canvas): resolve rectangle persistence issue`
-  - `style(ui): update rectangle colors to match dots`
-  - `test(rectangle): add creation and selection tests`
+  - `#107: feat(rectangle): implement rectangle resize operation`
+  - `#104: fix(canvas): resolve rectangle persistence issue`
+  - `#128: style(lint): update formatting standards`
+  - `#110: test(rectangle): add creation and selection tests`
+
+## Pull Request Title Format
+- Start with issue number: `#123: type(scope): description`
+- Must include issue number for traceability
+- Follow conventional commit format after issue number
+- Examples:
+  - `#107: feat(rectangle): implement rectangle resize operation`
+  - `#104: fix(canvas): resolve rectangle persistence issue`
+  - `#128: style(lint): update formatting standards`
+  - `#110: test(rectangle): add creation and selection tests`
 
 ## Development Workflow
 1. **Start**: `git checkout -b feature/issue-number-description`
