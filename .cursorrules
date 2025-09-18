@@ -108,3 +108,106 @@ gh issue develop 110 --checkout  # Creates feature/110-issue-title
 - Screen reader compatibility
 - High contrast mode support
 - Focus management for canvas interactions
+
+## Error Handling & Debugging Guidelines
+- **Always check CI status** before considering work complete
+- **Run tests locally** before pushing: `flutter test`
+- **Format code** before committing: `flutter format .`
+- **Analyze code** before committing: `flutter analyze`
+- **Handle merge conflicts** by rebasing on latest main
+- **Verify branch is up-to-date** before creating PRs
+- **Check pre-commit hooks** - they run automatically on commit
+- **Test with realistic data** to catch edge cases early
+- **Use debug prints** sparingly and remove before committing
+
+## Pull Request Best Practices
+- **Always check merge conflicts** before creating PR
+- **Use simple PR descriptions** to avoid shell parsing issues
+- **Avoid backticks in PR descriptions** (causes command substitution errors)
+- **Include acceptance criteria** in PR description
+- **Reference related issues** with "Resolves #123"
+- **Ensure CI passes** before requesting review
+- **Keep PRs focused** - one feature per PR
+- **Write descriptive titles** following conventional commit format
+- **Add screenshots** for UI changes when applicable
+
+## Essential Commands Reference
+```bash
+# Development workflow
+git fetch origin && git checkout main && git pull origin main
+git checkout -b feature/123-description
+
+# Testing & Quality
+flutter test                    # Run all tests
+flutter format .               # Format code
+flutter analyze               # Check for issues
+dart format --set-exit-if-changed .  # CI format check
+
+# Branch management
+git rebase origin/main         # Update branch with latest main
+git push --force-with-lease    # Force push after rebase
+gh pr create --title "..."     # Create PR with GitHub CLI
+
+# Issue management
+gh issue list --state open     # List open issues
+gh issue view 123             # View specific issue
+gh issue develop 123 --checkout # Create branch from issue
+```
+
+## Issue Management Guidelines
+- **Always create issues first** before starting development
+- **Use descriptive issue titles** that clearly state the feature/fix
+- **Include acceptance criteria** in issue descriptions
+- **Link related issues** when applicable
+- **Assign appropriate labels** (area/canvas, phase/MVP, etc.)
+- **Close issues** with PR merges using "Resolves #123"
+- **Update issue status** as development progresses
+- **Use GitHub CLI** for efficient issue management
+
+## Troubleshooting Guide
+### CI Failures
+- Format issues: Run `flutter format .`
+- Test failures: Run `flutter test` locally first
+- Analysis issues: Run `flutter analyze` and fix warnings
+- Dependency issues: Run `flutter pub get`
+
+### Merge Conflicts
+- Rebase on latest main: `git rebase origin/main`
+- Resolve conflicts manually
+- Force push: `git push --force-with-lease`
+- Verify branch is up-to-date before creating PR
+
+### PR Creation Errors
+- Avoid complex descriptions with backticks
+- Use simple, clear PR titles
+- Check branch is up-to-date first
+- Ensure CI passes before requesting review
+
+### Performance Issues
+- Profile canvas operations with Flutter DevTools
+- Check for memory leaks in long-running operations
+- Optimize shouldRepaint logic
+- Test with large datasets
+
+## Performance & Optimization Guidelines
+- **Profile canvas operations** for large datasets
+- **Use const constructors** where possible
+- **Implement shouldRepaint** logic efficiently
+- **Avoid unnecessary setState** calls
+- **Optimize gesture detection** for smooth interactions
+- **Test with realistic data sizes**
+- **Monitor memory usage** during development
+- **Use Flutter DevTools** for performance profiling
+- **Optimize painting operations** in custom painters
+- **Cache expensive calculations** when possible
+
+## Documentation Standards
+- **Comment complex algorithms** (e.g., hit testing, collision detection)
+- **Document public APIs** with dartdoc comments
+- **Update README** for new features
+- **Include usage examples** in widget documentation
+- **Document breaking changes** in PR descriptions
+- **Write clear commit messages** explaining what and why
+- **Document configuration changes** in .cursorrules updates
+- **Include inline comments** for business logic
+- **Document edge cases** and error handling
