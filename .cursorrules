@@ -58,15 +58,16 @@ gh issue develop 110 --checkout  # Creates feature/110-issue-title
   - `#110: test(rectangle): add creation and selection tests`
 
 ## Development Workflow
-1. **Start**: `git checkout -b feature/issue-number-description`
-2. **Develop**: Implement feature with comprehensive tests
-3. **Test**: Run `flutter test` and ensure all tests pass
-4. **Format**: Run `flutter format .` to format code
-5. **Commit**: Use conventional commit messages
-6. **Push**: Push feature branch to remote
-7. **PR**: Create pull request with detailed description
-8. **Review**: Address review feedback
-9. **Merge**: Merge to main after approval
+1. **Prepare**: Follow Pre-Development Workflow (fetch, checkout main, pull latest)
+2. **Start**: `git checkout -b feature/issue-number-description`
+3. **Develop**: Implement feature with comprehensive tests
+4. **Test**: Run `flutter test` and ensure all tests pass
+5. **Format**: Run `flutter format .` to format code
+6. **Commit**: Use conventional commit messages
+7. **Push**: Push feature branch to remote
+8. **PR**: Create pull request with detailed description
+9. **Review**: Address review feedback
+10. **Merge**: Merge to main after approval
 
 ## Code Quality Standards
 - **Tests**: Always write tests for new functionality
