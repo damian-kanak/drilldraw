@@ -51,7 +51,7 @@ class RectanglePainter extends CustomPainter {
     }
 
     // Draw resize handles for selected rectangle
-    if (drawingState.hasSelectedRectangles && !drawingState.isDrawing) {
+    if (drawingState.selectedRectangleId != null && !drawingState.isDrawing) {
       final selectedRect = drawingState.selectedRectangle;
       if (selectedRect != null) {
         _drawResizeHandles(canvas, selectedRect.bounds);
@@ -97,7 +97,9 @@ class RectanglePainter extends CustomPainter {
         drawingState.selectedRectangleId !=
             oldDelegate.drawingState.selectedRectangleId ||
         drawingState.isDrawing != oldDelegate.drawingState.isDrawing ||
-        drawingState.dragPreview != oldDelegate.drawingState.dragPreview;
+        drawingState.dragPreview != oldDelegate.drawingState.dragPreview ||
+        drawingState.isMoving != oldDelegate.drawingState.isMoving ||
+        drawingState.isResizing != oldDelegate.drawingState.isResizing;
   }
 
   /// Helper method to get the rectangle at a specific point

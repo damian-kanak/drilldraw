@@ -94,11 +94,71 @@ void main() {
       expect(selectedMode, DrawingMode.arrow);
     });
 
+    test('handleKeyboardEvent calls onDeleteSelectedShapes for Delete key', () {
+      bool deleteCalled = false;
+
+      final event = KeyDownEvent(
+        logicalKey: LogicalKeyboardKey.delete,
+        physicalKey: PhysicalKeyboardKey.delete,
+        timeStamp: Duration.zero,
+      );
+
+      KeyboardService.handleKeyboardEvent(
+        event,
+        () {},
+        null,
+        onDeleteSelectedShapes: () => deleteCalled = true,
+      );
+
+      expect(deleteCalled, isTrue);
+    });
+
+    test('handleKeyboardEvent calls onDeleteSelectedShapes for Backspace key',
+        () {
+      bool deleteCalled = false;
+
+      final event = KeyDownEvent(
+        logicalKey: LogicalKeyboardKey.backspace,
+        physicalKey: PhysicalKeyboardKey.backspace,
+        timeStamp: Duration.zero,
+      );
+
+      KeyboardService.handleKeyboardEvent(
+        event,
+        () {},
+        null,
+        onDeleteSelectedShapes: () => deleteCalled = true,
+      );
+
+      expect(deleteCalled, isTrue);
+    });
+
+    test(
+        'handleKeyboardEvent does not call onDeleteSelectedShapes when not provided',
+        () {
+      final event = KeyDownEvent(
+        logicalKey: LogicalKeyboardKey.delete,
+        physicalKey: PhysicalKeyboardKey.delete,
+        timeStamp: Duration.zero,
+      );
+
+      // Should not throw an error
+      expect(
+        () => KeyboardService.handleKeyboardEvent(
+          event,
+          () {},
+          null,
+        ),
+        returnsNormally,
+      );
+    });
+
     test('getKeyboardHelpText returns correct help text', () {
       final helpText = KeyboardService.getKeyboardHelpText();
 
       expect(helpText, contains('Ctrl+C'));
       expect(helpText, contains('Escape'));
+      expect(helpText, contains('Delete/Backspace'));
       expect(helpText, contains('clear all shapes'));
       expect(helpText, contains('mode switching'));
     });

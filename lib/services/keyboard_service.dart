@@ -7,8 +7,9 @@ class KeyboardService {
   static void handleKeyboardEvent(
     KeyEvent event,
     VoidCallback onClearDots,
-    Function(DrawingMode)? onModeChanged,
-  ) {
+    Function(DrawingMode)? onModeChanged, {
+    VoidCallback? onDeleteSelectedShapes,
+  }) {
     if (event is KeyDownEvent) {
       // Handle keyboard shortcuts
       if (event.logicalKey == LogicalKeyboardKey.keyC &&
@@ -16,6 +17,10 @@ class KeyboardService {
         onClearDots();
       } else if (event.logicalKey == LogicalKeyboardKey.escape) {
         onClearDots();
+      } else if (event.logicalKey == LogicalKeyboardKey.delete ||
+          event.logicalKey == LogicalKeyboardKey.backspace) {
+        // Handle Delete/Backspace key for selected shapes
+        onDeleteSelectedShapes?.call();
       } else if (onModeChanged != null) {
         // Handle mode switching shortcuts
         DrawingMode? targetMode;
@@ -39,6 +44,7 @@ class KeyboardService {
   /// Get help text for available keyboard shortcuts
   static String getKeyboardHelpText() {
     return 'Keyboard shortcuts: Ctrl+C or Escape to clear all shapes, '
+        'Delete/Backspace to delete selected shapes, '
         '1-4 for mode switching';
   }
 }

@@ -194,6 +194,53 @@ class DrawingState {
     );
   }
 
+  /// Delete selected shapes (dots and rectangles)
+  DrawingState deleteSelectedShapes() {
+    // Start with current state
+    DrawingState newState = this;
+
+    // Delete selected dot if any
+    if (selectedDot != null) {
+      final newDots = dots.where((dot) => dot != selectedDot).toList();
+      newState = newState.copyWith(
+        dots: newDots,
+        clearSelectedDot: true,
+      );
+    }
+
+    // Delete selected rectangle if any
+    if (selectedRectangleId != null) {
+      final newRectangles =
+          rectangles.where((rect) => rect.id != selectedRectangleId).toList();
+      newState = newState.copyWith(
+        rectangles: newRectangles,
+        clearSelectedRectangleId: true,
+      );
+    }
+
+    return newState;
+  }
+
+  /// Delete a specific dot by position
+  DrawingState deleteDot(Offset position) {
+    final newDots = dots.where((dot) => dot != position).toList();
+    final shouldClearSelection = selectedDot == position;
+    return copyWith(
+      dots: newDots,
+      clearSelectedDot: shouldClearSelection,
+    );
+  }
+
+  /// Delete a specific rectangle by ID
+  DrawingState deleteRectangle(String id) {
+    final newRectangles = rectangles.where((rect) => rect.id != id).toList();
+    final shouldClearSelection = selectedRectangleId == id;
+    return copyWith(
+      rectangles: newRectangles,
+      clearSelectedRectangleId: shouldClearSelection,
+    );
+  }
+
   /// Set the drawing mode
   DrawingState setDrawingMode(DrawingMode mode) {
     return copyWith(
@@ -408,4 +455,9 @@ class DrawingState {
 
   /// Check if any shapes are selected
   bool get hasSelectedShapes => hasSelectedDots || hasSelectedRectangles;
+
+  /// Check if there are any selected shapes that can be deleted
+  bool get hasSelectedShapesToDelete {
+    return selectedDot != null || selectedRectangleId != null;
+  }
 }
