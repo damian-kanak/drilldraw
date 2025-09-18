@@ -15,7 +15,8 @@ class Rectangle {
     required this.createdAt,
   });
 
-  /// Creates a copy of this Rectangle with the given fields replaced with the new values
+  /// Creates a copy of this Rectangle with the given fields replaced with the
+  /// new values
   Rectangle copyWith({
     String? id,
     Rect? bounds,
@@ -58,6 +59,7 @@ class Rectangle {
 
   @override
   String toString() {
-    return 'Rectangle(id: $id, bounds: $bounds, selected: $isSelected, createdAt: $createdAt)';
+    return 'Rectangle(id: $id, bounds: $bounds, selected: $isSelected, '
+        'createdAt: $createdAt)';
   }
 }

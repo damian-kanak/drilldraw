@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
 import '../constants/app_constants.dart';
-import '../models/drawing_state.dart';
 import '../models/drawing_mode.dart';
+import '../models/drawing_state.dart';
 import '../painters/combined_painter.dart';
 
 /// A canvas widget that displays and handles drawing interactions
@@ -33,8 +34,8 @@ class DotCanvas extends StatelessWidget {
       child: Focus(
         autofocus: true,
         child: Semantics(
-          label:
-              '${AppConstants.canvasSemanticLabel} ${drawingState.totalShapeCount} shapes placed.',
+          label: '${AppConstants.canvasSemanticLabel} '
+              '${drawingState.totalShapeCount} shapes placed.',
           hint: AppConstants.canvasSemanticHint,
           child: GestureDetector(
             key: const ValueKey('canvas_gesture_detector'),
@@ -51,7 +52,8 @@ class DotCanvas extends StatelessWidget {
                   onDotAdded(localPosition);
                   break;
                 case DrawingMode.rectangle:
-                  // For rectangle, onTapDown can initiate a single-click rectangle or start a drag
+                  // For rectangle, onTapDown can initiate a single-click
+                  // rectangle or start a drag
                   onRectangleCreationStart(localPosition);
                   break;
                 case DrawingMode.select:

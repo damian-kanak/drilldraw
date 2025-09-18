@@ -16,8 +16,8 @@ class InfoPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       container: true,
-      label:
-          '${AppConstants.instructionsText}. ${AppConstants.shapesPlacedText}${drawingState.totalShapeCount}',
+      label: '${AppConstants.instructionsText}. '
+          '${AppConstants.shapesPlacedText}${drawingState.totalShapeCount}',
       liveRegion: true,
       child: Container(
         padding: const EdgeInsets.all(16.0),

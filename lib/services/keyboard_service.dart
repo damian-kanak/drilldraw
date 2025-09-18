@@ -38,6 +38,7 @@ class KeyboardService {
 
   /// Get help text for available keyboard shortcuts
   static String getKeyboardHelpText() {
-    return 'Keyboard shortcuts: Ctrl+C or Escape to clear all shapes, 1-4 for mode switching';
+    return 'Keyboard shortcuts: Ctrl+C or Escape to clear all shapes, '
+        '1-4 for mode switching';
   }
 }

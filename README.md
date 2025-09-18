@@ -68,7 +68,18 @@ A Flutter application for interactive diagram creation with drill-down capabilit
 
 ### Development Setup
 
-4. **Setup Git Hooks (Recommended):**
+4. **Code Formatting (Required):**
+   ```bash
+   # Check formatting
+   dart format --output=none --set-exit-if-changed .
+   
+   # Fix formatting issues
+   dart format .
+   ```
+   
+   All code must be properly formatted before committing. The CI pipeline will fail if formatting issues are detected.
+
+5. **Setup Git Hooks (Recommended):**
    ```bash
    ./scripts/setup-git-hooks.sh
    ```

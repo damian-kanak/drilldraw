@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+
 import 'constants/app_constants.dart';
-import 'models/drawing_state.dart';
 import 'models/drawing_mode.dart';
+import 'models/drawing_state.dart';
 import 'models/rectangle.dart';
 import 'painters/combined_painter.dart';
 import 'services/keyboard_service.dart';
 import 'utils/id_generator.dart';
 import 'widgets/clear_button.dart';
 import 'widgets/dot_canvas.dart';
-import 'widgets/info_panel.dart';
 import 'widgets/drawing_mode_toolbar.dart';
+import 'widgets/info_panel.dart';
 
 void main() {
   runApp(const DrillDrawApp());

@@ -56,7 +56,8 @@ class RectanglePainter extends CustomPainter {
     }
   }
 
-  /// Draws a preview rectangle while the user is dragging to create a new rectangle
+  /// Draws a preview rectangle while the user is dragging to create a new
+  /// rectangle
   void _drawDragPreview(Canvas canvas, Rect dragPreview) {
     // Skip if preview is too small
     if (dragPreview.width < AppConstants.rectangleMinSize ||
@@ -82,7 +83,8 @@ class RectanglePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(RectanglePainter oldDelegate) {
-    // Repaint when rectangles change, selection changes, or drawing state changes
+    // Repaint when rectangles change, selection changes, or drawing state
+    // changes
     return drawingState.rectangles != oldDelegate.drawingState.rectangles ||
         drawingState.selectedRectangleId !=
             oldDelegate.drawingState.selectedRectangleId ||
