@@ -119,7 +119,7 @@ class _DrillDrawHomePageState extends State<DrillDrawHomePage> {
   void _selectShape(Offset position) {
     setState(() {
       final combinedPainter = CombinedPainter(_drawingState);
-      
+
       // Try to select a rectangle first (rectangles are on top)
       final rectangleAt = combinedPainter.getRectangleAt(position);
       if (rectangleAt != null) {

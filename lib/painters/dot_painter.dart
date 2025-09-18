@@ -23,12 +23,13 @@ class DotPainter extends CustomPainter {
     final selectedBorderPaint = Paint()
       ..color = Colors.orange
       ..style = PaintingStyle.stroke
-      ..strokeWidth = AppConstants.dotStrokeWidth * 1.5; // Thicker border for selection
+      ..strokeWidth =
+          AppConstants.dotStrokeWidth * 1.5; // Thicker border for selection
 
     // Draw all dots
     for (final dot in drawingState.dots) {
       canvas.drawCircle(dot, AppConstants.dotRadius, dotPaint);
-      
+
       // Draw selection highlight if selected
       if (drawingState.selectedDot == dot) {
         canvas.drawCircle(dot, AppConstants.dotRadius, selectedBorderPaint);

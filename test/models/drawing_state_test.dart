@@ -281,7 +281,8 @@ void main() {
       expect(stateWithDotSelection.selectedRectangleId, isNull);
 
       // Select rectangle - should clear dot selection
-      final stateWithRectSelectionAgain = stateWithDotSelection.selectRectangle('rect1');
+      final stateWithRectSelectionAgain =
+          stateWithDotSelection.selectRectangle('rect1');
       expect(stateWithRectSelectionAgain.selectedDot, isNull);
       expect(stateWithRectSelectionAgain.selectedRectangleId, 'rect1');
     });
@@ -307,7 +308,7 @@ void main() {
 
       // Try to select dot while rectangle is selected
       final stateWithBothSelected = stateWithRectSelection.selectDot(dot1);
-      
+
       // Should clear rectangle selection and select dot instead
       expect(stateWithBothSelected.selectedDot, dot1);
       expect(stateWithBothSelected.selectedRectangleId, isNull);
