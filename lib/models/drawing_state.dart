@@ -14,6 +14,10 @@ class DrawingState {
   final Rect? dragPreview;
   final bool isMoving;
   final Offset? moveStartPosition;
+  final bool isResizing;
+  final String? resizeHandle;
+  final Offset? resizeStartPosition;
+  final Rect? resizeStartBounds;
 
   const DrawingState({
     this.dots = const [],
@@ -25,6 +29,10 @@ class DrawingState {
     this.dragPreview,
     this.isMoving = false,
     this.moveStartPosition,
+    this.isResizing = false,
+    this.resizeHandle,
+    this.resizeStartPosition,
+    this.resizeStartBounds,
   });
 
   /// Create a copy of this state with updated values
@@ -38,10 +46,17 @@ class DrawingState {
     Rect? dragPreview,
     bool? isMoving,
     Offset? moveStartPosition,
+    bool? isResizing,
+    String? resizeHandle,
+    Offset? resizeStartPosition,
+    Rect? resizeStartBounds,
     bool clearSelectedDot = false,
     bool clearSelectedRectangleId = false,
     bool clearDragPreview = false,
     bool clearMoveStartPosition = false,
+    bool clearResizeHandle = false,
+    bool clearResizeStartPosition = false,
+    bool clearResizeStartBounds = false,
   }) {
     return DrawingState(
       dots: dots ?? this.dots,
@@ -57,6 +72,15 @@ class DrawingState {
       moveStartPosition: clearMoveStartPosition
           ? null
           : (moveStartPosition ?? this.moveStartPosition),
+      isResizing: isResizing ?? this.isResizing,
+      resizeHandle:
+          clearResizeHandle ? null : (resizeHandle ?? this.resizeHandle),
+      resizeStartPosition: clearResizeStartPosition
+          ? null
+          : (resizeStartPosition ?? this.resizeStartPosition),
+      resizeStartBounds: clearResizeStartBounds
+          ? null
+          : (resizeStartBounds ?? this.resizeStartBounds),
     );
   }
 
@@ -228,6 +252,123 @@ class DrawingState {
       isMoving: false,
       clearMoveStartPosition: true,
     );
+  }
+
+  /// Start resizing a selected rectangle
+  DrawingState startResizeOperation(
+    String handle,
+    Offset startPosition,
+  ) {
+    if (selectedRectangleId == null) return this;
+
+    final selectedRect = selectedRectangle;
+    if (selectedRect == null) return this;
+
+    return copyWith(
+      isResizing: true,
+      resizeHandle: handle,
+      resizeStartPosition: startPosition,
+      resizeStartBounds: selectedRect.bounds,
+    );
+  }
+
+  /// Update the size of the rectangle being resized
+  DrawingState updateResizeOperation(Offset currentPosition) {
+    if (!isResizing ||
+        resizeHandle == null ||
+        resizeStartPosition == null ||
+        resizeStartBounds == null ||
+        selectedRectangleId == null) {
+      return this;
+    }
+
+    final delta = currentPosition - resizeStartPosition!;
+    final newBounds = _calculateResizedBounds(
+      resizeStartBounds!,
+      resizeHandle!,
+      delta,
+    );
+
+    final updatedRectangles = rectangles.map((rect) {
+      if (rect.id == selectedRectangleId) {
+        return rect.copyWith(bounds: newBounds);
+      }
+      return rect;
+    }).toList();
+
+    return copyWith(rectangles: updatedRectangles);
+  }
+
+  /// End the resize operation
+  DrawingState endResizeOperation() {
+    return copyWith(
+      isResizing: false,
+      clearResizeHandle: true,
+      clearResizeStartPosition: true,
+      clearResizeStartBounds: true,
+    );
+  }
+
+  /// Calculate the new bounds for a resize operation
+  Rect _calculateResizedBounds(
+    Rect originalBounds,
+    String handle,
+    Offset delta,
+  ) {
+    double left = originalBounds.left;
+    double top = originalBounds.top;
+    double right = originalBounds.right;
+    double bottom = originalBounds.bottom;
+
+    switch (handle) {
+      case 'topLeft':
+        left = originalBounds.left + delta.dx;
+        top = originalBounds.top + delta.dy;
+        break;
+      case 'topRight':
+        right = originalBounds.right + delta.dx;
+        top = originalBounds.top + delta.dy;
+        break;
+      case 'bottomLeft':
+        left = originalBounds.left + delta.dx;
+        bottom = originalBounds.bottom + delta.dy;
+        break;
+      case 'bottomRight':
+        right = originalBounds.right + delta.dx;
+        bottom = originalBounds.bottom + delta.dy;
+        break;
+      case 'top':
+        top = originalBounds.top + delta.dy;
+        break;
+      case 'bottom':
+        bottom = originalBounds.bottom + delta.dy;
+        break;
+      case 'left':
+        left = originalBounds.left + delta.dx;
+        break;
+      case 'right':
+        right = originalBounds.right + delta.dx;
+        break;
+    }
+
+    // Ensure minimum size
+    const minSize = 10.0;
+    if (right - left < minSize) {
+      if (handle.contains('Left')) {
+        left = right - minSize;
+      } else {
+        right = left + minSize;
+      }
+    }
+    if (bottom - top < minSize) {
+      if (handle.contains('top')) {
+        top = bottom - minSize;
+      } else {
+        bottom = top + minSize;
+      }
+    }
+
+    return Rect.fromLTRB(left, top, right, bottom);
   }
 
   /// Get the number of dots currently on the canvas
