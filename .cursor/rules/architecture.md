@@ -27,6 +27,11 @@
 - All coordinates must be within canvas bounds
 - Proper boundary checking for all operations
 
+### CanvasBounds Service
+- **Centralized coordinate validation service**
+- Provides clamping, size normalization, and bounds checking
+- Integrates with snapping and shape creation services
+
 ## Implementation Rules
 
 ### Shape Interface Requirements
@@ -78,14 +83,67 @@ class DotCanvas extends StatefulWidget {
 }
 ```
 
-### CanvasBounds Enforcement
+### CanvasBounds Service Implementation
 ```dart
-// ✅ Correct: Always check bounds
+class CanvasBounds {
+  final Rect bounds;
+  
+  // Clamp point within bounds
+  Offset clamp(Offset point);
+  
+  // Clamp size to minimum and maximum
+  Size clampSize(Size size);
+  
+  // Check if point is within bounds
+  bool contains(Offset point);
+  
+  // Check if rect intersects with bounds
+  bool intersects(Rect rect);
+}
+```
+
+### CanvasBounds Usage
+```dart
+// ✅ Correct: Always use CanvasBounds service
+final clampedPoint = canvasBounds.clamp(userPoint);
+final clampedSize = canvasBounds.clampSize(userSize);
+final snappedPoint = snapToGrid(clampedPoint);
+
+// ❌ Wrong: Direct coordinate usage
+final shape = Rectangle(userPoint, userSize); // No validation
+```
+
+### Canvas Coordinate Validation Rules
+- **ALL coordinates MUST be clamped within canvas bounds**
+- **NEVER allow coordinates outside canvas boundaries**
+- **ALWAYS validate coordinates before drawing operations**
+- **ALL shapes MUST have minimum size constraints**
+- **SNAP coordinates AFTER clamping, never before**
+
+### Required Validation Pattern
+```dart
+// ✅ Correct: Always validate coordinates
 final clampedPoint = canvasBounds.clamp(point);
 final clampedSize = canvasBounds.clampSize(size);
+final snappedPoint = snapToGrid(clampedPoint);
 
-// ❌ Wrong: No bounds checking
+// ❌ Wrong: No validation
 final shape = Rectangle(point, size); // Could be outside bounds
+```
+
+### Error Handling Requirements
+```dart
+// ✅ Correct: Graceful error handling
+try {
+  final shape = createShape(validatedPoint, validatedSize);
+  if (canvasBounds.contains(shape.bounds)) {
+    drawingState.addShape(shape);
+  } else {
+    throw CanvasBoundsException('Shape outside canvas bounds');
+  }
+} catch (e) {
+  showUserError('Cannot create shape: ${e.message}');
+}
 ```
 
 ## Anti-Patterns to Avoid
