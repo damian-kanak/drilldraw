@@ -1,5 +1,35 @@
 # Cursor AI Rules for DrillDraw Project
 
+## 🚨 CRITICAL: BRANCH NAMING RULE 🚨
+**NEVER START WORK WITHOUT CREATING A BRANCH WITH ISSUE NUMBER**
+**ALWAYS CHECK: Are you on main? → Create branch first!**
+**BRANCH NAMING: `type/issue-number-description` (e.g., `feature/177-architecture-rules`)**
+
+## Pre-Work Checklist (MANDATORY)
+Before starting ANY work, Cursor MUST:
+1. **Check current branch**: `git branch --show-current`
+2. **If on main**: Create branch with issue number first
+3. **Verify branch name**: Must start with issue number
+4. **Only then**: Start implementing changes
+
+**Example workflow:**
+```bash
+# 1. Check current branch
+git branch --show-current  # Should NOT be "main"
+
+# 2. If on main, create branch first
+git checkout -b feature/177-architecture-rules
+
+# 3. Then start work
+```
+
+## Memory Reminders for Cursor AI
+- **REMEMBER**: Never work on main branch
+- **REMEMBER**: Always create branch with issue number first
+- **REMEMBER**: Check branch before starting any work
+- **REMEMBER**: This rule applies to ALL work, even documentation
+- **REMEMBER**: Even small changes need proper branch naming
+
 ## Git Workflow
 - ALWAYS create feature branches for new features - NEVER commit directly to main
 - **MANDATORY: All branch names MUST start with issue number** (e.g., `feature/122-description`)
