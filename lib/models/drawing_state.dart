@@ -442,7 +442,12 @@ class DrawingState {
   Rectangle? get selectedRectangle {
     if (selectedRectangleId == null) return null;
     try {
-      return rectangles.firstWhere((rect) => rect.id == selectedRectangleId);
+      if (isUsingUnifiedStorage) {
+        return rectanglesFromShapes
+            .firstWhere((rect) => rect.id == selectedRectangleId);
+      } else {
+        return rectangles.firstWhere((rect) => rect.id == selectedRectangleId);
+      }
     } on StateError {
       return null;
     }
