@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 ///
 /// This class defines the common interface that all shapes must implement,
 /// providing a unified way to handle different shape types (dots, rectangles,
-/// etc.)
-/// through a single abstraction.
+/// etc.) through a single abstraction.
 abstract class Shape {
   /// Unique identifier for this shape instance
   String get id;
