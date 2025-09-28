@@ -12,6 +12,14 @@ Before starting ANY work, Cursor MUST:
 3. **Verify branch name**: Must start with issue number
 4. **Only then**: Start implementing changes
 
+## Pre-Commit Checklist (MANDATORY)
+Before committing ANY work, Cursor MUST:
+1. **Run analyzer**: `flutter analyze` - Fix ALL issues before committing
+2. **Format code**: `dart format .` - Ensure code formatting compliance
+3. **Run tests**: `flutter test` - Ensure all tests pass
+4. **Check for lints**: `read_lints` tool - Verify no linting issues
+5. **Only then**: Commit with proper message format
+
 **Example workflow:**
 ```bash
 # 1. Check current branch
@@ -29,6 +37,10 @@ git checkout -b feature/177-architecture-rules
 - **REMEMBER**: Check branch before starting any work
 - **REMEMBER**: This rule applies to ALL work, even documentation
 - **REMEMBER**: Even small changes need proper branch naming
+- **REMEMBER**: ALWAYS run `flutter analyze` before committing
+- **REMEMBER**: ALWAYS run `dart format .` before committing
+- **REMEMBER**: ALWAYS run `flutter test` before committing
+- **REMEMBER**: Fix ALL analyzer issues before committing
 
 ## Git Workflow
 - ALWAYS create feature branches for new features - NEVER commit directly to main
