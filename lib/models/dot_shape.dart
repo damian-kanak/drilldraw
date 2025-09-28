@@ -4,7 +4,8 @@ import 'shape.dart';
 
 /// A concrete implementation of Shape for dots
 ///
-/// DotShape represents a point on the canvas with a position and selection state.
+/// DotShape represents a point on the canvas with a position and selection
+/// state.
 /// It provides hit-testing based on distance from the center point.
 class DotShape extends Shape {
   @override
@@ -74,6 +75,7 @@ class DotShape extends Shape {
 
   @override
   String toString() {
-    return 'DotShape{id: $id, position: $position, isSelected: $isSelected, hitTestRadius: $hitTestRadius}';
+    return 'DotShape{id: $id, position: $position, isSelected: $isSelected, '
+        'hitTestRadius: $hitTestRadius}';
   }
 }
