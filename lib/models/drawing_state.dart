@@ -109,16 +109,37 @@ class DrawingState {
 
   /// Update an existing rectangle
   DrawingState updateRectangle(String id, Rectangle updatedRectangle) {
-    final newRectangles = rectangles.map((rect) {
-      return rect.id == id ? updatedRectangle : rect;
-    }).toList();
-    return copyWith(rectangles: newRectangles);
+    if (isUsingUnifiedStorage) {
+      // Use unified storage
+      final newShapes = shapes.map((shape) {
+        if (shape is RectangleShape && shape.id == id) {
+          return RectangleShape.fromRectangle(updatedRectangle);
+        }
+        return shape;
+      }).toList();
+      return copyWith(shapes: newShapes);
+    } else {
+      // Use legacy storage
+      final newRectangles = rectangles.map((rect) {
+        return rect.id == id ? updatedRectangle : rect;
+      }).toList();
+      return copyWith(rectangles: newRectangles);
+    }
   }
 
   /// Remove a rectangle by ID
   DrawingState removeRectangle(String id) {
-    final newRectangles = rectangles.where((rect) => rect.id != id).toList();
-    return copyWith(rectangles: newRectangles);
+    if (isUsingUnifiedStorage) {
+      // Use unified storage
+      final newShapes = shapes
+          .where((shape) => !(shape is RectangleShape && shape.id == id))
+          .toList();
+      return copyWith(shapes: newShapes);
+    } else {
+      // Use legacy storage
+      final newRectangles = rectangles.where((rect) => rect.id != id).toList();
+      return copyWith(rectangles: newRectangles);
+    }
   }
 
   /// Select a dot by position
