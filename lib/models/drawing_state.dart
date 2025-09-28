@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 import 'drawing_mode.dart';
 import 'rectangle.dart';
+import 'shape.dart';
+import 'dot_shape.dart';
+import 'rectangle_shape.dart';
 
 /// Represents the current state of the drawing canvas
 class DrawingState {
   final List<Offset> dots;
   final List<Rectangle> rectangles;
+
+  /// Unified storage for all shapes (new system)
+  final List<Shape> shapes;
+
   final Offset? selectedDot;
   final String? selectedRectangleId;
   final DrawingMode drawingMode;
@@ -22,6 +30,7 @@ class DrawingState {
   const DrawingState({
     this.dots = const [],
     this.rectangles = const [],
+    this.shapes = const [],
     this.selectedDot,
     this.selectedRectangleId,
     this.drawingMode = DrawingMode.dot,
@@ -39,6 +48,7 @@ class DrawingState {
   DrawingState copyWith({
     List<Offset>? dots,
     List<Rectangle>? rectangles,
+    List<Shape>? shapes,
     Offset? selectedDot,
     String? selectedRectangleId,
     DrawingMode? drawingMode,
@@ -61,6 +71,7 @@ class DrawingState {
     return DrawingState(
       dots: dots ?? this.dots,
       rectangles: rectangles ?? this.rectangles,
+      shapes: shapes ?? this.shapes,
       selectedDot: clearSelectedDot ? null : (selectedDot ?? this.selectedDot),
       selectedRectangleId: clearSelectedRectangleId
           ? null
@@ -460,4 +471,74 @@ class DrawingState {
   bool get hasSelectedShapesToDelete {
     return selectedDot != null || selectedRectangleId != null;
   }
+
+  // ============================================================================
+  // PHASE 1: UNIFIED STORAGE HELPERS (Backward Compatible)
+  // ============================================================================
+
+  /// Get all shapes from unified storage, or convert from legacy storage if empty
+  List<Shape> get allShapes {
+    if (shapes.isNotEmpty) {
+      return shapes;
+    }
+    return _convertLegacyToShapes();
+  }
+
+  /// Convert legacy dots and rectangles to unified shapes
+  List<Shape> _convertLegacyToShapes() {
+    final result = <Shape>[];
+
+    // Convert dots to DotShapes
+    for (final dot in dots) {
+      result.add(DotShape(
+        id: const Uuid().v4(),
+        position: dot,
+      ));
+    }
+
+    // Convert rectangles to RectangleShapes
+    for (final rect in rectangles) {
+      result.add(RectangleShape.fromRectangle(rect));
+    }
+
+    return result;
+  }
+
+  /// Get dots from unified storage (for backward compatibility)
+  List<Offset> get dotsFromShapes {
+    if (shapes.isEmpty) {
+      return dots; // Use legacy storage
+    }
+    return shapes
+        .where((shape) => shape is DotShape)
+        .cast<DotShape>()
+        .map((shape) => shape.position)
+        .toList();
+  }
+
+  /// Get rectangles from unified storage (for backward compatibility)
+  List<Rectangle> get rectanglesFromShapes {
+    if (shapes.isEmpty) {
+      return rectangles; // Use legacy storage
+    }
+    return shapes
+        .where((shape) => shape is RectangleShape)
+        .cast<RectangleShape>()
+        .map((shape) => shape.toRectangle())
+        .toList();
+  }
+
+  /// Check if we're using unified storage
+  bool get isUsingUnifiedStorage => shapes.isNotEmpty;
+
+  /// Get total count from unified storage
+  int get unifiedShapeCount => allShapes.length;
+
+  /// Get dot count from unified storage
+  int get unifiedDotCount =>
+      allShapes.where((shape) => shape is DotShape).length;
+
+  /// Get rectangle count from unified storage
+  int get unifiedRectangleCount =>
+      allShapes.where((shape) => shape is RectangleShape).length;
 }
