@@ -27,7 +27,7 @@ class DotPainter extends CustomPainter {
           AppConstants.dotStrokeWidth * 1.5; // Thicker border for selection
 
     // Draw all dots
-    for (final dot in drawingState.dots) {
+    for (final dot in drawingState.dotsFromShapes) {
       canvas.drawCircle(dot, AppConstants.dotRadius, dotPaint);
 
       // Draw selection highlight if selected
@@ -42,15 +42,16 @@ class DotPainter extends CustomPainter {
   @override
   bool shouldRepaint(DotPainter oldDelegate) {
     // Repaint when dots list or selection changes
-    return drawingState.dots != oldDelegate.drawingState.dots ||
+    return drawingState.dotsFromShapes !=
+            oldDelegate.drawingState.dotsFromShapes ||
         drawingState.selectedDot != oldDelegate.drawingState.selectedDot;
   }
 
   /// Returns the top-most dot at a given point, or null if none found.
   Offset? getDotAt(Offset point) {
     // Iterate in reverse to get the top-most dot (last one added)
-    for (int i = drawingState.dots.length - 1; i >= 0; i--) {
-      final dot = drawingState.dots[i];
+    for (int i = drawingState.dotsFromShapes.length - 1; i >= 0; i--) {
+      final dot = drawingState.dotsFromShapes[i];
       final distance = (point - dot).distance;
       if (distance <= AppConstants.dotRadius) {
         return dot;
@@ -61,7 +62,7 @@ class DotPainter extends CustomPainter {
 
   /// Returns a list of dots that are within a given area.
   List<Offset> getDotsInArea(Rect area) {
-    return drawingState.dots.where((dot) {
+    return drawingState.dotsFromShapes.where((dot) {
       final distance = (area.center - dot).distance;
       return distance <= AppConstants.dotRadius + area.width / 2;
     }).toList();

@@ -13,7 +13,7 @@ void main() {
     });
 
     test('CombinedPainter shouldRepaint returns true when dots change', () {
-      const state1 = DrawingState(dots: []);
+      const state1 = DrawingState();
       const state2 = DrawingState(dots: [Offset(10, 10)]);
 
       const painter1 = CombinedPainter(state1);
@@ -24,7 +24,7 @@ void main() {
 
     test('CombinedPainter shouldRepaint returns true when rectangles change',
         () {
-      const state1 = DrawingState(rectangles: []);
+      const state1 = DrawingState();
       final state2 = DrawingState(
         rectangles: [
           Rectangle(
