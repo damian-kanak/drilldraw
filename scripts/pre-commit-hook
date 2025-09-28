@@ -27,10 +27,11 @@ fi
 
 # Run flutter analyze
 echo "🔍 Running Flutter analysis..."
-flutter analyze --no-fatal-infos
+flutter analyze
 
 if [ $? -ne 0 ]; then
     echo "❌ Flutter analysis failed. Please fix the issues before committing."
+    echo "💡 Run 'flutter analyze' to see detailed issues."
     exit 1
 fi
 
