@@ -26,8 +26,10 @@ class CombinedPainter extends CustomPainter {
   @override
   bool shouldRepaint(CombinedPainter oldDelegate) {
     // Repaint when any part of the drawing state changes
-    return drawingState.dots != oldDelegate.drawingState.dots ||
-        drawingState.rectangles != oldDelegate.drawingState.rectangles ||
+    return drawingState.dotsFromShapes !=
+            oldDelegate.drawingState.dotsFromShapes ||
+        drawingState.rectanglesFromShapes !=
+            oldDelegate.drawingState.rectanglesFromShapes ||
         drawingState.selectedDot != oldDelegate.drawingState.selectedDot ||
         drawingState.selectedRectangleId !=
             oldDelegate.drawingState.selectedRectangleId ||

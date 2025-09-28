@@ -29,7 +29,7 @@ class RectanglePainter extends CustomPainter {
       ..strokeWidth = AppConstants.rectangleStrokeWidth * 2;
 
     // Draw all rectangles
-    for (final rectangle in drawingState.rectangles) {
+    for (final rectangle in drawingState.rectanglesFromShapes) {
       final rect = rectangle.bounds;
 
       // Skip rectangles that are too small or invalid
@@ -93,7 +93,8 @@ class RectanglePainter extends CustomPainter {
   bool shouldRepaint(RectanglePainter oldDelegate) {
     // Repaint when rectangles change, selection changes, or drawing state
     // changes
-    return drawingState.rectangles != oldDelegate.drawingState.rectangles ||
+    return drawingState.rectanglesFromShapes !=
+            oldDelegate.drawingState.rectanglesFromShapes ||
         drawingState.selectedRectangleId !=
             oldDelegate.drawingState.selectedRectangleId ||
         drawingState.isDrawing != oldDelegate.drawingState.isDrawing ||
@@ -105,8 +106,8 @@ class RectanglePainter extends CustomPainter {
   /// Helper method to get the rectangle at a specific point
   Rectangle? getRectangleAt(Offset point) {
     // Check rectangles in reverse order (top-most first)
-    for (int i = drawingState.rectangles.length - 1; i >= 0; i--) {
-      final rectangle = drawingState.rectangles[i];
+    for (int i = drawingState.rectanglesFromShapes.length - 1; i >= 0; i--) {
+      final rectangle = drawingState.rectanglesFromShapes[i];
       if (rectangle.containsPoint(point)) {
         return rectangle;
       }
@@ -116,7 +117,7 @@ class RectanglePainter extends CustomPainter {
 
   /// Helper method to get all rectangles that intersect with a given rectangle
   List<Rectangle> getRectanglesInArea(Rect area) {
-    return drawingState.rectangles
+    return drawingState.rectanglesFromShapes
         .where((rectangle) => rectangle.bounds.overlaps(area))
         .toList();
   }
