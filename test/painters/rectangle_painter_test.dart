@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:drilldraw/models/drawing_state.dart';
 import 'package:drilldraw/models/rectangle.dart';
+import 'package:drilldraw/models/rectangle_shape.dart';
 import 'package:drilldraw/painters/rectangle_painter.dart';
 
 void main() {
@@ -14,14 +15,16 @@ void main() {
 
     test('RectanglePainter shouldRepaint returns true when rectangles change',
         () {
-      const state1 = DrawingState(rectangles: []);
-      final state2 = DrawingState(rectangles: [
-        Rectangle(
-          id: 'test',
-          bounds: Rect.fromLTWH(0, 0, 100, 100),
-          createdAt: DateTime(2025, 1, 1),
-        ),
-      ]);
+      const state1 = DrawingState();
+      final state2 = DrawingState(
+        rectangles: [
+          Rectangle(
+            id: 'test',
+            bounds: Rect.fromLTWH(0, 0, 100, 100),
+            createdAt: DateTime(2025, 1, 1),
+          ),
+        ],
+      );
 
       const painter1 = RectanglePainter(state1);
       final painter2 = RectanglePainter(state2);
