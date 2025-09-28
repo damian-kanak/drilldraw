@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
+import 'dot_shape.dart';
 import 'drawing_mode.dart';
 import 'rectangle.dart';
-import 'shape.dart';
-import 'dot_shape.dart';
 import 'rectangle_shape.dart';
+import 'shape.dart';
 
 /// Represents the current state of the drawing canvas
 class DrawingState {
@@ -472,11 +472,12 @@ class DrawingState {
     return selectedDot != null || selectedRectangleId != null;
   }
 
-  // ============================================================================
+  // =========================================================================
   // PHASE 1: UNIFIED STORAGE HELPERS (Backward Compatible)
-  // ============================================================================
+  // =========================================================================
 
-  /// Get all shapes from unified storage, or convert from legacy storage if empty
+  /// Get all shapes from unified storage, or convert from legacy storage if
+  /// empty
   List<Shape> get allShapes {
     if (shapes.isNotEmpty) {
       return shapes;
@@ -509,11 +510,7 @@ class DrawingState {
     if (shapes.isEmpty) {
       return dots; // Use legacy storage
     }
-    return shapes
-        .where((shape) => shape is DotShape)
-        .cast<DotShape>()
-        .map((shape) => shape.position)
-        .toList();
+    return shapes.whereType<DotShape>().map((shape) => shape.position).toList();
   }
 
   /// Get rectangles from unified storage (for backward compatibility)
@@ -522,8 +519,7 @@ class DrawingState {
       return rectangles; // Use legacy storage
     }
     return shapes
-        .where((shape) => shape is RectangleShape)
-        .cast<RectangleShape>()
+        .whereType<RectangleShape>()
         .map((shape) => shape.toRectangle())
         .toList();
   }
@@ -535,10 +531,8 @@ class DrawingState {
   int get unifiedShapeCount => allShapes.length;
 
   /// Get dot count from unified storage
-  int get unifiedDotCount =>
-      allShapes.where((shape) => shape is DotShape).length;
+  int get unifiedDotCount => allShapes.whereType<DotShape>().length;
 
   /// Get rectangle count from unified storage
-  int get unifiedRectangleCount =>
-      allShapes.where((shape) => shape is RectangleShape).length;
+  int get unifiedRectangleCount => allShapes.whereType<RectangleShape>().length;
 }
