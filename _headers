@@ -1,0 +1,56 @@
+# DrillDraw - HTTP Headers Configuration
+# GitHub Pages supports custom headers via _headers file
+
+# Enable compression for all text-based files
+/*.html
+  Cache-Control: public, max-age=3600
+  Content-Encoding: gzip
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Encoding: gzip
+
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Encoding: gzip
+
+/*.json
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Encoding: gzip
+
+# Static assets - cache for 1 year
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/icons/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Flutter web assets
+/canvaskit/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Service worker - short cache
+/flutter_service_worker.js
+  Cache-Control: public, max-age=3600
+
+# Main app files - medium cache with revalidation
+/app.html
+  Cache-Control: public, max-age=3600
+
+# Index page - short cache for updates
+/index.html
+  Cache-Control: public, max-age=3600
+
+# Security headers
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# Performance headers
+/*
+  Vary: Accept-Encoding
