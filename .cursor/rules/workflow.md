@@ -1,5 +1,7 @@
 # DrillDraw Workflow Rules
 
+> After committing: see [pr-flow.md](pr-flow.md) for the PR checklist.
+
 Keywords: branch, git, commit, PR, checklist, troubleshooting, issue
 
 ## CRITICAL: Branch Naming Rule
@@ -21,8 +23,8 @@ Before starting ANY work, Cursor MUST:
 
 Before committing ANY work, Cursor MUST:
 
-1. **Run analyzer**: `flutter analyze` - Fix ALL issues before committing
-2. **Format code**: `dart format .` - Ensure code formatting compliance
+1. **Format code**: `dart format .` - Ensure code formatting compliance
+2. **Run analyzer**: `flutter analyze` - Fix ALL issues before committing
 3. **Run tests**: `flutter test` - Ensure all tests pass
 4. **Check for lints**: `read_lints` tool - Verify no linting issues
 5. **Only then**: Commit with proper message format

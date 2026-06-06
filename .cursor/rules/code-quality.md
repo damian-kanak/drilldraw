@@ -1,5 +1,7 @@
 # DrillDraw Code Quality Rules
 
+> When reviewing canvas work: also see [architecture.md](architecture.md) for shape and hit-test rules.
+
 Keywords: quality, performance, Flutter, canvas, review, documentation, accessibility
 
 ## Code Quality Standards
@@ -25,24 +27,15 @@ Keywords: quality, performance, Flutter, canvas, review, documentation, accessib
 
 ## Performance Guidelines
 
-- Optimize canvas painting operations
+- Optimize canvas painting operations and use proper shouldRepaint logic
 - Use const constructors where possible
-- Implement proper shouldRepaint logic
-- Avoid unnecessary rebuilds
-- Profile performance for large datasets
-
-## Performance & Optimization Guidelines
-
-- **Profile canvas operations** for large datasets
-- **Use const constructors** where possible
-- **Implement shouldRepaint** logic efficiently
-- **Avoid unnecessary setState** calls
-- **Optimize gesture detection** for smooth interactions
-- **Test with realistic data sizes**
-- **Monitor memory usage** during development
-- **Use Flutter DevTools** for performance profiling
-- **Optimize painting operations** in custom painters
-- **Cache expensive calculations** when possible
+- Avoid unnecessary rebuilds and setState calls
+- Profile performance for large datasets (Flutter DevTools)
+- Optimize gesture detection for smooth interactions
+- Test with realistic data sizes
+- Monitor memory usage during development
+- Optimize painting operations in custom painters
+- Cache expensive calculations when possible
 
 ## Accessibility Requirements
 

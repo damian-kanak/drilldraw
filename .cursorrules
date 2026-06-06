@@ -2,27 +2,27 @@
 
 ## Critical Rules
 
+- **Plan before coding.** Create plan (objective, files, tests, ADRs) before implementation. See .cursor/rules/pr-flow.md.
 - **Never work on main branch.** Always create a branch with an issue number first.
 - **Pre-work:** Check branch (`git branch --show-current`). If on main, create branch `type/issue-number-description`, then start work.
-- **Pre-commit:** Run `flutter analyze`, `dart format .`, `flutter test`, then commit. Fix all issues before committing.
+- **Pre-commit:** Run `dart format .`, `flutter analyze`, `flutter test`, then commit. Fix all issues before committing.
 
 ## Documentation Map
 
 Use these files for detailed rules. Cursor should read them when relevant:
 
-- **Workflow** (branch naming, git, commands, troubleshooting): `.cursor/rules/workflow.md`
-- **Architecture**: `.cursor/rules/architecture.md`
-- **PR and planning**: `.cursor/rules/pr-flow.md`
-- **Testing**: `.cursor/rules/testing.md`
-- **Code quality, performance, canvas, review**: `.cursor/rules/code-quality.md`
-- **Glossary**: `.cursor/rules/glossary.md`
-- **ADRs**: `docs/ADR-*.md`
+- **Workflow**: .cursor/rules/workflow.md (branch, git, commit, troubleshooting)
+- **Architecture**: .cursor/rules/architecture.md (shapes, selection, hit-test, canvas)
+- **Decision trees**: .cursor/rules/decision-trees.md (when to do X, which docs to read)
+- **PR and planning**: .cursor/rules/pr-flow.md (before coding, PR checklist)
+- **Testing**: .cursor/rules/testing.md (when writing or reviewing tests)
+- **Code quality**: .cursor/rules/code-quality.md (when writing/reviewing code)
+- **Glossary**: .cursor/rules/glossary.md (terminology)
+- **ADRs**: docs/ADR-*.md (architecture decisions)
 
 ## Memory Reminders
 
-- Never work on main branch.
-- Always create branch with issue number before starting work.
-- Always run `flutter analyze` before committing.
-- Always run `dart format .` before committing.
-- Always run `flutter test` before committing.
-- This applies to all work, including documentation.
+- Plan before coding; see pr-flow.md
+- Never work on main; always use branch with issue number
+- Pre-commit: format, analyze, test (see workflow.md)
+- Applies to all work, including documentation

@@ -1,5 +1,7 @@
 # DrillDraw Testing Rules
 
+> After tests pass: see [pr-flow.md](pr-flow.md) for the PR checklist.
+
 Keywords: test, coverage, unit, widget, integration, accessibility, regression
 
 ## Testing Requirements
